@@ -1,0 +1,256 @@
+/* Site & rules. Mobile first (scrolls), desktop >= 900px: site card left, rules right. */
+.site-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Site card */
+.site-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  background: var(--bg-night);
+  color: var(--ink-inverse);
+}
+
+.site-card__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.site-card__label {
+  font: var(--text-label);
+  color: var(--ink-inverse-muted);
+}
+
+.site-card__number {
+  font: 900 44px/1.1 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--brand-accent);
+}
+
+.site-card__pin {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--bg-night-raised);
+}
+
+.site-map {
+  height: 112px;
+  overflow: hidden;
+}
+
+.site-map__canvas {
+  position: relative;
+  width: 322px;
+  height: 112px;
+}
+
+.site-map__canvas img {
+  width: 322px;
+  height: 112px;
+}
+
+.site-map__label {
+  position: absolute;
+  font: var(--text-label);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.site-map__label--site {
+  left: 166px;
+  top: 18px;
+  width: 36px;
+  color: var(--bg-night);
+}
+
+.site-map__label--restroom {
+  left: 150px;
+  top: 77px;
+  width: 80px;
+  color: var(--ink-inverse);
+}
+
+.site-map__label--kitchen {
+  left: 238px;
+  top: 77px;
+  width: 60px;
+  color: var(--ink-inverse);
+}
+
+.site-map__label--entrance {
+  left: 50px;
+  top: 84px;
+  width: 90px;
+  text-align: left;
+  color: var(--ink-inverse-muted);
+}
+
+.site-card__directions {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font: 400 14px/1.6 var(--font-sans);
+}
+
+.site-card__directions img {
+  flex: none;
+  margin-top: 3px;
+}
+
+/* Rules */
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rules__title {
+  font: var(--text-heading);
+}
+
+.rules__list {
+  margin: 0;
+  padding: 4px 16px;
+  list-style: none;
+  border: 1px solid var(--line-default);
+  border-radius: 18px;
+  background: var(--bg-surface);
+}
+
+.rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.rule + .rule {
+  border-top: 1px solid var(--line-default);
+}
+
+.rule__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--brand-accent-soft);
+}
+
+.rule__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rule__title {
+  font: var(--text-body-medium);
+}
+
+.rule__desc {
+  font: var(--text-caption);
+  color: var(--ink-secondary);
+}
+
+/* Agreement checkbox */
+.agree {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--bg-surface);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.agree--checked {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+}
+
+.agree__input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.agree:has(.agree__input:focus-visible) {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.agree__box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--line-strong);
+  border-radius: 7px;
+  background: var(--bg-surface);
+}
+
+.agree--checked .agree__box {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary);
+}
+
+.agree__text {
+  font: var(--text-body-medium);
+}
+
+@media (min-width: 900px) {
+  .site-rules {
+    display: grid;
+    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+    column-gap: 40px;
+    align-items: start;
+  }
+
+  .site-card {
+    position: sticky;
+    top: 24px;
+    padding: 24px;
+  }
+
+  .site-map {
+    display: flex;
+    justify-content: center;
+  }
+
+  .rules__title {
+    font-size: 22px;
+  }
+
+  .rules__list {
+    padding: 8px 24px;
+  }
+
+  .shell__footer:has(.agree) {
+    align-items: center;
+  }
+
+  .shell__footer .agree {
+    flex: 1;
+    max-width: 420px;
+    margin-right: auto;
+  }
+}

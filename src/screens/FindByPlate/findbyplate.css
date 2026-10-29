@@ -1,0 +1,192 @@
+/* Find by number plate. Mobile first, desktop >= 900px is a two-column panel. */
+.plate-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plate-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plate-page__title {
+  font: var(--text-title);
+  letter-spacing: -0.005em;
+}
+
+.plate-page__desc {
+  font: var(--text-body);
+  color: var(--ink-secondary);
+}
+
+/* Plate preview */
+.plate-preview {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  border-radius: 18px;
+  background: var(--bg-muted);
+}
+
+.plate {
+  position: relative;
+  flex: none;
+  width: 232px;
+  height: 116px;
+  border: 3px solid #1c6638;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 12%);
+  color: #1c6638;
+  overflow: hidden;
+  text-align: center;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.plate > p {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.plate__top {
+  left: 113px;
+  top: 5px;
+  width: 200px;
+  font-size: 22px;
+}
+
+.plate__kana {
+  left: 27px;
+  top: 51px;
+  width: 36px;
+  font-size: 24px;
+}
+
+.plate__serial {
+  left: 131px;
+  top: 31px;
+  width: 176px;
+  font-size: 50px;
+  font-weight: 900;
+}
+
+.plate__bolt {
+  position: absolute;
+  top: 11px;
+}
+
+.plate__bolt--left {
+  left: 23px;
+}
+
+.plate__bolt--right {
+  left: 196px;
+}
+
+/* Fields */
+.plate-page__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.plate-page__legend {
+  margin-bottom: 12px;
+  padding: 0;
+  font: var(--text-label);
+  color: var(--ink-secondary);
+}
+
+.plate-page__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.plate-page__row--kana {
+  grid-template-columns: 96px 1fr;
+}
+
+.plate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.plate-field__label {
+  font: var(--text-caption);
+  color: var(--ink-tertiary);
+}
+
+.plate-field__input {
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  color: var(--ink-primary);
+  font: var(--text-heading);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.plate-field__input:hover {
+  border-color: var(--ink-tertiary);
+}
+
+.plate-field__input:focus,
+.plate-field__input:focus-visible {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 1px var(--brand-primary);
+}
+
+@media (min-width: 900px) {
+  .plate-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'intro  fields'
+      'plate  fields'
+      'plate  .';
+    align-content: start;
+    column-gap: 40px;
+    row-gap: 20px;
+  }
+
+  .plate-page__intro {
+    grid-area: intro;
+  }
+
+  .plate-preview {
+    grid-area: plate;
+    align-self: start;
+    padding: 36px 0;
+    border-radius: 24px;
+  }
+
+  .plate {
+    transform: scale(1.25);
+    margin-block: 14px;
+  }
+
+  .plate-page__fields {
+    grid-area: fields;
+    align-self: start;
+    padding-top: 6px;
+  }
+
+  .plate-page__title {
+    font-size: 28px;
+  }
+}

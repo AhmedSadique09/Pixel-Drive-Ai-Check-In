@@ -1,0 +1,131 @@
+.wk-full {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 4px;
+}
+
+.wk-full__heading {
+  gap: 10px;
+}
+
+.wk-full__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background: var(--status-danger-soft);
+}
+
+.wk-full__list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wk-full__subtitle {
+  font: var(--text-heading);
+}
+
+.wk-full__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wk-place {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line-default);
+  border-radius: 16px;
+  background: var(--bg-surface);
+}
+
+.wk-place__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.wk-place__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--brand-primary-soft);
+}
+
+.wk-place__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.wk-place__name {
+  font: var(--text-body-medium);
+}
+
+.wk-place__meta {
+  font: var(--text-caption);
+  color: var(--ink-secondary);
+}
+
+.wk-place__tag {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--status-success-soft);
+  color: var(--status-success);
+  font: var(--text-label);
+}
+
+.wk-place__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.wk-place__distance {
+  font: var(--text-caption);
+  color: var(--ink-tertiary);
+}
+
+.wk-place__route {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--ink-primary);
+  font: var(--text-body-sm);
+  text-decoration: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.wk-place__route:hover {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-soft);
+}
+
+@media (min-width: 900px) {
+  .wk-full__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wk-place {
+    justify-content: space-between;
+  }
+}

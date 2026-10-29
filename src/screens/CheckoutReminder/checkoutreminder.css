@@ -1,0 +1,137 @@
+.reminder__greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.reminder__hello {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--text-label);
+  letter-spacing: 0.02em;
+  color: var(--co-warning-ink);
+}
+
+.reminder__countdown {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--co-warning-soft);
+  font: 700 12px/1.4 var(--font-sans);
+  letter-spacing: 0.02em;
+  color: var(--co-warning-ink);
+}
+
+.reminder__pass {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: var(--bg-night);
+  color: var(--ink-inverse);
+}
+
+.reminder__site {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.reminder__site-label {
+  font: var(--text-label);
+  letter-spacing: 0.02em;
+  color: var(--ink-inverse-muted);
+}
+
+.reminder__site-number {
+  font: 900 44px/1.1 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--brand-accent);
+}
+
+.reminder__paid {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--co-success);
+  font: var(--text-label);
+  letter-spacing: 0.02em;
+}
+
+.reminder__divider {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--bg-night-raised);
+}
+
+.reminder__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reminder__row-label {
+  flex: 1;
+  font: 400 14px/1.6 var(--font-sans);
+  color: var(--ink-inverse-muted);
+}
+
+.reminder__row-value {
+  font: var(--text-body-medium);
+  text-align: right;
+}
+
+.reminder__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 16px;
+  list-style: none;
+  border: 1px solid var(--line-default);
+  border-radius: 18px;
+  background: var(--bg-surface);
+}
+
+.reminder__step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: var(--text-body-medium);
+}
+
+.reminder__step-no {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--co-primary-soft);
+  font: 700 12px/1.4 var(--font-sans);
+  color: var(--brand-primary);
+}
+
+.reminder__hint {
+  font: 400 14px/1.6 var(--font-sans);
+  color: var(--co-ink-secondary);
+}
+
+@media (min-width: 900px) {
+  .reminder__site-number {
+    font-size: 56px;
+  }
+
+  .reminder__pass {
+    padding: 24px 28px;
+  }
+}

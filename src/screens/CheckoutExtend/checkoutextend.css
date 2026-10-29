@@ -1,0 +1,135 @@
+.extend__header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extend__availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--co-success-soft);
+  font: 400 14px/1.6 var(--font-sans);
+  color: var(--co-success);
+}
+
+.extend__options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.extend__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.extend-option__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.extend-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line-default);
+  border-radius: 16px;
+  background: var(--bg-surface);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.extend-option:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 4px 14px rgb(30 90 71 / 12%);
+}
+
+.extend-option--selected {
+  /* 2px border without shifting layout */
+  border: 2px solid var(--brand-primary);
+  padding: 15px;
+}
+
+.extend-option:has(.extend-option__input:focus-visible) {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.extend-option__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--co-bg-muted);
+}
+
+.extend-option--selected .extend-option__icon {
+  background: var(--co-primary-soft);
+}
+
+.extend-option__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.55;
+}
+
+.extend-option__label {
+  font: var(--text-body-medium);
+}
+
+.extend-option__until {
+  font: var(--text-caption);
+  color: var(--co-ink-secondary);
+}
+
+.extend-option__price {
+  font: var(--text-heading);
+  white-space: nowrap;
+}
+
+.extend-option__radio {
+  flex: none;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--co-line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+}
+
+.extend-option--selected .extend-option__radio {
+  border: 7px solid var(--brand-primary);
+}
+
+.extend__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font: var(--text-caption);
+  color: var(--ink-tertiary);
+}
+
+.extend__note img {
+  margin-top: 4px;
+}

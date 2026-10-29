@@ -1,0 +1,234 @@
+/* No booking found. Mobile first, desktop >= 900px: explanation left, walk-in offer right. */
+.no-booking {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.no-booking__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.no-booking__badge {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background: var(--status-warning-soft);
+}
+
+.no-booking__title {
+  font: var(--text-title);
+  letter-spacing: -0.005em;
+}
+
+.no-booking__desc {
+  font: var(--text-body);
+  color: var(--ink-secondary);
+}
+
+.no-booking__reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-default);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+}
+
+.no-booking__reasons-title {
+  font: var(--text-label);
+  color: var(--ink-secondary);
+}
+
+.no-booking__reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.no-booking__reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font: 400 14px/1.6 var(--font-sans);
+}
+
+.no-booking__reason img {
+  flex: none;
+  margin-top: 5px;
+}
+
+.no-booking__retry {
+  display: flex;
+  gap: 10px;
+}
+
+.outline-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  font: 400 14px/1.6 var(--font-sans);
+  white-space: nowrap;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.outline-btn:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 4px 14px rgb(30 90 71 / 12%);
+}
+
+.outline-btn:active {
+  transform: scale(0.99);
+}
+
+/* Walk-in offer */
+.walk-in {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--bg-night);
+  color: var(--ink-inverse);
+}
+
+.walk-in__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.walk-in__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-night-raised);
+}
+
+.walk-in__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.walk-in__title {
+  font: var(--text-heading);
+}
+
+.walk-in__desc {
+  font: var(--text-caption);
+  color: var(--ink-inverse-muted);
+}
+
+.walk-in__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px 20px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--brand-accent);
+  color: var(--bg-night);
+  font: var(--text-button);
+  transition: filter 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.walk-in__cta:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 8px 20px rgb(227 155 50 / 30%);
+}
+
+.walk-in__cta:active {
+  transform: scale(0.99);
+}
+
+.walk-in__cta:focus-visible {
+  outline-color: var(--ink-inverse);
+}
+
+/* Bottom ghost button */
+.ghost-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--brand-primary);
+  font: var(--text-body-medium);
+}
+
+.ghost-btn:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 900px) {
+  .no-booking {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'header  walkin'
+      'reasons walkin'
+      'retry   walkin';
+    grid-template-rows: auto auto 1fr;
+    column-gap: 40px;
+    row-gap: 18px;
+  }
+
+  .no-booking__header {
+    grid-area: header;
+  }
+
+  .no-booking__reasons {
+    grid-area: reasons;
+  }
+
+  .no-booking__retry {
+    grid-area: retry;
+    align-self: start;
+  }
+
+  .walk-in {
+    grid-area: walkin;
+    align-self: start;
+    padding: 28px;
+    gap: 22px;
+  }
+
+  .no-booking__title {
+    font-size: 28px;
+  }
+
+  .shell__footer:has(.ghost-btn) {
+    justify-content: center;
+  }
+
+  .ghost-btn {
+    width: auto;
+  }
+}

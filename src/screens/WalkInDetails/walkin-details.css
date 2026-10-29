@@ -1,0 +1,154 @@
+.wk-details {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.wk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.wk-field--kana {
+  flex: none;
+  width: 96px;
+}
+
+.wk-field__label {
+  font: var(--text-label);
+  color: var(--ink-secondary);
+}
+
+.wk-field__label--sm {
+  font: var(--text-caption);
+  color: var(--ink-tertiary);
+}
+
+.wk-field__control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding-inline: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.wk-field__control img {
+  flex: none;
+}
+
+/* focused: 2px brand border without shifting layout */
+.wk-field__control:focus-within {
+  border-color: var(--brand-primary);
+  box-shadow: inset 0 0 0 1px var(--brand-primary);
+}
+
+.wk-field__control--error {
+  border-color: var(--status-danger);
+  box-shadow: inset 0 0 0 1px var(--status-danger);
+}
+
+.wk-field__input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--ink-primary);
+  outline: none;
+}
+
+.wk-field__input--name {
+  font: var(--text-body-medium);
+}
+
+.wk-field__input--plate {
+  font: var(--text-heading);
+}
+
+.wk-field__error {
+  font: var(--text-caption);
+  color: var(--status-danger);
+}
+
+/* ---------- Number plate group ---------- */
+.wk-plate-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.wk-plate-fields__legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.wk-plate-fields__row {
+  display: flex;
+  gap: 10px;
+}
+
+.wk-plate-fields__row > .wk-field:not(.wk-field--kana) {
+  flex: 1;
+}
+
+.wk-plate {
+  position: relative;
+  flex: none;
+  width: 112px;
+  height: 56px;
+  border: 2px solid #1c6638;
+  border-radius: 6px;
+  background: #fff;
+  color: #1c6638;
+  text-align: center;
+  overflow: hidden;
+}
+
+.wk-plate > span {
+  position: absolute;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+.wk-plate__top {
+  left: 54px;
+  top: 1px;
+  width: 96px;
+  font: 700 11px/1.4 var(--font-sans);
+}
+
+.wk-plate__kana {
+  left: 12px;
+  top: 24px;
+  width: 20px;
+  font: 700 12px/1.4 var(--font-sans);
+}
+
+.wk-plate__number {
+  left: 64px;
+  top: 14px;
+  width: 88px;
+  font: 700 24px/1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 900px) {
+  .wk-plate-fields__row {
+    gap: 16px;
+  }
+}
