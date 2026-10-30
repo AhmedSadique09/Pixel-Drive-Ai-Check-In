@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import iconCheck from '../../assets/checkoutcomplete/icon-check.svg'
 import iconCheckSmall from '../../assets/checkoutcomplete/icon-check-sm.svg'
 import iconCheckTag from '../../assets/checkoutcomplete/icon-check-tag.svg'
@@ -17,7 +18,10 @@ const RECEIPT_ROWS = [
 const TAGS = ['Quiet', 'Clean', 'Near an onsen', 'Would come back']
 const STAR_VALUES = [1, 2, 3, 4, 5] as const
 
+const RESET_DELAY_MS = 1500
+
 export default function CheckoutComplete() {
+  const navigate = useNavigate()
   const [rating, setRating] = useState(4)
   const [selectedTags, setSelectedTags] = useState<readonly string[]>(['Quiet', 'Near an onsen'])
   const [isReceiptSent, setIsReceiptSent] = useState(false)
@@ -26,16 +30,21 @@ export default function CheckoutComplete() {
   const toggleTag = (tag: string) =>
     setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((item) => item !== tag) : [...prev, tag]))
 
+  const handleSendRating = () => {
+    setIsRatingSent(true)
+    setTimeout(() => navigate('/'), RESET_DELAY_MS)
+  }
+
   return (
     <CheckoutShell
       variant="brand"
-      step={3}
+      step={2}
       bar={
         <button
           type="button"
           className="co-btn co-btn--primary"
           disabled={isRatingSent}
-          onClick={() => setIsRatingSent(true)}
+          onClick={handleSendRating}
         >
           {isRatingSent ? 'Thanks for your rating' : 'Send rating'}
         </button>

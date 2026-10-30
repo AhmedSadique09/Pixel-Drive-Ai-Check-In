@@ -2,12 +2,14 @@
 export interface ScreenRoute {
   path: string
   folder: string
-  /** Figma frame the screen was built from */
-  figmaNodeId: string
+  /** Figma frame the screen was built from, when one exists */
+  figmaNodeId?: string
 }
 
 export const SCREEN_ROUTES: ScreenRoute[] = [
   { path: '/', folder: 'Welcome', figmaNodeId: '6:259' },
+  /** No Figma frame — built from the project requirements doc, not a design file. */
+  { path: '/admin', folder: 'Admin' },
   { path: '/check-in/plate', folder: 'FindByPlate', figmaNodeId: '8:739' },
   { path: '/check-in/no-booking', folder: 'NoBooking', figmaNodeId: '8:835' },
   { path: '/check-in/booking', folder: 'BookingFound', figmaNodeId: '6:429' },

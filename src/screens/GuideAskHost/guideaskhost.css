@@ -1,4 +1,36 @@
 /* Extends the shared chat styles from ../GuideAnswers/guideanswers.css */
+.chat:has(.askhost__sidebar) {
+  display: flex;
+  flex-direction: column;
+}
+
+.askhost__sidebar {
+  order: 2;
+  padding: 0 16px 16px;
+}
+
+@media (min-width: 900px) {
+  .chat:has(.askhost__sidebar) {
+    flex-direction: row;
+  }
+
+  .askhost__sidebar {
+    order: 1;
+    flex: 0 0 320px;
+    padding: 24px 20px;
+    background: var(--brand-primary-soft);
+    border-right: 1px solid var(--line-default);
+  }
+
+  .chat:has(.askhost__sidebar) .chat__panel {
+    order: 2;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
 .askhost__missing {
   display: flex;
   align-items: center;
@@ -13,11 +45,10 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 18px;
-  border: 1px solid var(--line-default);
-  border-radius: 20px;
-  background: var(--bg-surface);
-  box-shadow: 0 6px 18px rgb(23 33 28 / 8%);
+  padding: 18px 16px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .askhost__card-head {

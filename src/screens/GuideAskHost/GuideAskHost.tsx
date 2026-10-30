@@ -22,6 +22,31 @@ export default function GuideAskHost() {
 
   return (
     <main className="chat">
+      {isEscalationOpen && (
+        <aside className="askhost__sidebar" aria-label="Contact host">
+          <section className="askhost__card" aria-labelledby="askhost-title">
+            <div className="askhost__card-head">
+              <span className="askhost__card-icon">
+                <img src={iconMessageGreen} alt="" width={20} height={20} />
+              </span>
+              <h2 id="askhost-title" className="askhost__card-title">
+                Ask the host instead?
+              </h2>
+            </div>
+            <p className="askhost__card-desc">
+              We’ll send your question to the host on LINE. Their reply will appear here.
+            </p>
+            <button type="button" className="askhost__line" onClick={() => navigate('/guide/host-replied')}>
+              <img src={iconMessageWhite} alt="" width={18} height={18} />
+              Send to host on LINE
+            </button>
+            <button type="button" className="askhost__ghost" onClick={() => setIsEscalationOpen(false)}>
+              Not now
+            </button>
+          </section>
+        </aside>
+      )}
+
       <div className="chat__panel">
         <ChatHeader onBack={() => navigate('/guide')} />
 
@@ -41,30 +66,6 @@ export default function GuideAskHost() {
             {followUps.map((text, index) => (
               <GuestMessage key={`${index}-${text}`} text={text} />
             ))}
-            {isEscalationOpen && (
-              <li>
-                <section className="askhost__card" aria-labelledby="askhost-title">
-                  <div className="askhost__card-head">
-                    <span className="askhost__card-icon">
-                      <img src={iconMessageGreen} alt="" width={20} height={20} />
-                    </span>
-                    <h2 id="askhost-title" className="askhost__card-title">
-                      Ask the host instead?
-                    </h2>
-                  </div>
-                  <p className="askhost__card-desc">
-                    We’ll send your question to the host on LINE. Their reply will appear here.
-                  </p>
-                  <button type="button" className="askhost__line" onClick={() => navigate('/guide/host-replied')}>
-                    <img src={iconMessageWhite} alt="" width={18} height={18} />
-                    Send to host on LINE
-                  </button>
-                  <button type="button" className="askhost__ghost" onClick={() => setIsEscalationOpen(false)}>
-                    Not now
-                  </button>
-                </section>
-              </li>
-            )}
           </ol>
         </div>
 

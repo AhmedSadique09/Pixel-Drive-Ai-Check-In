@@ -172,6 +172,10 @@
 
 /* ---------- Desktop: night rail on the left, flow on the right ---------- */
 @media (min-width: 900px) {
+  .co__round {
+    display: none;
+  }
+
   .co__rail {
     flex: 0 0 min(38%, 460px);
     display: flex;

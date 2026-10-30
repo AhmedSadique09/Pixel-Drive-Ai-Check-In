@@ -5,13 +5,13 @@ import iconGlobe from '../../assets/checkoutshared/icon-globe.svg'
 import iconMoon from '../../assets/checkoutshared/icon-moon.svg'
 import './checkout.css'
 
-const FLOW_STEPS = ['Morning reminder', 'Checklist', 'Complete & receipt'] as const
+const FLOW_STEPS = ['Checklist', 'Complete & receipt'] as const
 
 interface CheckoutShellProps {
   /** 'brand' shows the logo + park name, 'back' shows a back button + "Check-out". */
   variant: 'brand' | 'back'
-  /** 1-based position in the check-out flow, used by the desktop side rail. */
-  step: 1 | 2 | 3
+  /** 1-based position in the check-out flow, used by the desktop side rail. 0 = before the tracked flow (no step highlighted). */
+  step: 0 | 1 | 2
   onBack?: () => void
   /** Page content. */
   children: ReactNode

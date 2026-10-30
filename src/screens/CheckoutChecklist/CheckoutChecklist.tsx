@@ -26,7 +26,7 @@ const ITEMS: readonly ChecklistItem[] = [
   { id: 'site', icon: iconTent, label: 'Nothing left behind at the site', isWarm: true },
 ]
 
-const INITIALLY_CHECKED: readonly string[] = ['rubbish', 'fire', 'power']
+const INITIALLY_CHECKED: readonly string[] = []
 
 export default function CheckoutChecklist() {
   const navigate = useNavigate()
@@ -47,7 +47,7 @@ export default function CheckoutChecklist() {
   return (
     <CheckoutShell
       variant="back"
-      step={2}
+      step={1}
       onBack={() => navigate('/check-out')}
       bar={
         <>

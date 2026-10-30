@@ -4,6 +4,7 @@ export interface CommonCopy {
   selfCheckIn: string
   goBack: string
   changeLanguage: string
+  adminPanel: string
 }
 
 export interface WelcomeCopy {
@@ -78,10 +79,77 @@ export interface CheckInCopy {
   siteRules: SiteRulesCopy
 }
 
+export interface AdminCopy {
+  title: string
+  tabs: {
+    arrivals: string
+    questions: string
+    facilities: string
+    activeFacilities: string
+  }
+  guestView: string
+  openMenu: string
+  closeMenu: string
+  expandSidebar: string
+  collapseSidebar: string
+  arrivals: {
+    arrivalsToday: string
+    checkedIn: string
+    unpaid: string
+    guest: string
+    plate: string
+    site: string
+    checkIn: string
+    payment: string
+    checkedInBadge: string
+    notYetBadge: string
+    paidBadge: string
+    unpaidBadge: string
+  }
+  questions: {
+    chats: string
+    backToChats: string
+    online: string
+    aiGuide: string
+    you: string
+    typeMessage: string
+    send: string
+    selectConversation: string
+  }
+  activeFacilities: {
+    statLabel: string
+    empty: string
+    facility: string
+    fee: string
+    sites: string
+    rulesDoc: string
+    status: string
+    guestLink: string
+    live: string
+    openGuestView: string
+  }
+  facilities: {
+    addTitle: string
+    addHint: string
+    loadSample: string
+    facilityName: string
+    fee: string
+    numberOfSites: string
+    rulesDocument: string
+    pasteRulesText: string
+    plainTextHint: string
+    createFacility: string
+    liveIn: (seconds: number) => string
+    sectionsIndexed: (sections: number, sites: number) => string
+    openGuestView: string
+  }
+}
+
 export interface Translations {
   common: CommonCopy
   welcome: WelcomeCopy
   checkIn: CheckInCopy
+  admin: AdminCopy
 }
 
 export const DEFAULT_LANGUAGE: LanguageCode = 'en'
@@ -100,6 +168,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
       selfCheckIn: '24-hour self check-in',
       goBack: 'Go back',
       changeLanguage: 'Change language',
+      adminPanel: 'Admin panel',
     },
     welcome: {
       greet: 'Welcome',
@@ -181,12 +250,78 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         ],
       },
     },
+    admin: {
+      title: 'Admin panel',
+      tabs: {
+        arrivals: "Today's arrivals",
+        questions: 'Guest questions',
+        facilities: 'Facilities',
+        activeFacilities: 'Active facilities',
+      },
+      guestView: 'Guest view',
+      openMenu: 'Open menu',
+      closeMenu: 'Close menu',
+      expandSidebar: 'Expand sidebar',
+      collapseSidebar: 'Collapse sidebar',
+      arrivals: {
+        arrivalsToday: 'Arrivals today',
+        checkedIn: 'Checked in',
+        unpaid: 'Unpaid',
+        guest: 'Guest',
+        plate: 'Plate',
+        site: 'Site',
+        checkIn: 'Check-in',
+        payment: 'Payment',
+        checkedInBadge: 'Checked in',
+        notYetBadge: 'Not yet',
+        paidBadge: 'Paid',
+        unpaidBadge: 'Unpaid',
+      },
+      questions: {
+        chats: 'Chats',
+        backToChats: 'Back to chats',
+        online: 'online',
+        aiGuide: 'AI guide',
+        you: 'You',
+        typeMessage: 'Type a message',
+        send: 'Send',
+        selectConversation: 'Select a conversation to view messages.',
+      },
+      activeFacilities: {
+        statLabel: 'Active facilities',
+        empty: 'No facilities yet. Create one from the Facilities tab.',
+        facility: 'Facility',
+        fee: 'Fee',
+        sites: 'Sites',
+        rulesDoc: 'Rules doc',
+        status: 'Status',
+        guestLink: 'Guest link',
+        live: 'Live',
+        openGuestView: 'Open guest view',
+      },
+      facilities: {
+        addTitle: 'Add a facility',
+        addHint: "Name + rules document. That's all a new park needs.",
+        loadSample: 'Load sample park',
+        facilityName: 'Facility name',
+        fee: 'Fee (¥)',
+        numberOfSites: 'Number of sites',
+        rulesDocument: 'Rules document (.txt / .md)',
+        pasteRulesText: '…or paste the rules text',
+        plainTextHint: 'This reads plain text only. PDF text extraction is part of the pilot build.',
+        createFacility: 'Create facility',
+        liveIn: (seconds) => `Live in ${seconds}s`,
+        sectionsIndexed: (sections, sites) => `${sections} section(s) indexed · ${sites} sites`,
+        openGuestView: 'Open guest view',
+      },
+    },
   },
   ja: {
     common: {
       selfCheckIn: '24時間セルフチェックイン',
       goBack: '戻る',
       changeLanguage: '言語を変更',
+      adminPanel: '管理者パネル',
     },
     welcome: {
       greet: 'ようこそ',
@@ -264,12 +399,78 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         ],
       },
     },
+    admin: {
+      title: '管理者パネル',
+      tabs: {
+        arrivals: '本日の到着',
+        questions: 'ゲストの質問',
+        facilities: '施設',
+        activeFacilities: '稼働中の施設',
+      },
+      guestView: 'ゲスト画面',
+      openMenu: 'メニューを開く',
+      closeMenu: 'メニューを閉じる',
+      expandSidebar: 'サイドバーを展開',
+      collapseSidebar: 'サイドバーを折りたたむ',
+      arrivals: {
+        arrivalsToday: '本日の到着数',
+        checkedIn: 'チェックイン済み',
+        unpaid: '未払い',
+        guest: 'ゲスト',
+        plate: 'ナンバー',
+        site: 'サイト',
+        checkIn: 'チェックイン',
+        payment: 'お支払い',
+        checkedInBadge: 'チェックイン済み',
+        notYetBadge: '未',
+        paidBadge: '支払い済み',
+        unpaidBadge: '未払い',
+      },
+      questions: {
+        chats: 'チャット',
+        backToChats: 'チャット一覧に戻る',
+        online: 'オンライン',
+        aiGuide: 'AIガイド',
+        you: 'あなた',
+        typeMessage: 'メッセージを入力',
+        send: '送信',
+        selectConversation: '会話を選択するとメッセージが表示されます。',
+      },
+      activeFacilities: {
+        statLabel: '稼働中の施設',
+        empty: 'まだ施設がありません。「施設」タブから作成してください。',
+        facility: '施設',
+        fee: '料金',
+        sites: 'サイト数',
+        rulesDoc: 'ルール文書',
+        status: 'ステータス',
+        guestLink: 'ゲスト用リンク',
+        live: '公開中',
+        openGuestView: 'ゲスト画面を開く',
+      },
+      facilities: {
+        addTitle: '施設を追加',
+        addHint: '名前とルール文書だけで新しい施設を作成できます。',
+        loadSample: 'サンプルを読み込む',
+        facilityName: '施設名',
+        fee: '料金（¥）',
+        numberOfSites: 'サイト数',
+        rulesDocument: 'ルール文書（.txt / .md）',
+        pasteRulesText: '…またはルールのテキストを貼り付け',
+        plainTextHint: 'プレーンテキストのみ読み込めます。PDFのテキスト抽出はパイロット版で対応予定です。',
+        createFacility: '施設を作成',
+        liveIn: (seconds) => `${seconds}秒で公開`,
+        sectionsIndexed: (sections, sites) => `${sections}セクションをインデックス済み・${sites}サイト`,
+        openGuestView: 'ゲスト画面を開く',
+      },
+    },
   },
   zh: {
     common: {
       selfCheckIn: '24小时自助入住',
       goBack: '返回',
       changeLanguage: '切换语言',
+      adminPanel: '管理面板',
     },
     welcome: {
       greet: '欢迎',
@@ -344,12 +545,78 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         ],
       },
     },
+    admin: {
+      title: '管理面板',
+      tabs: {
+        arrivals: '今日到达',
+        questions: '访客问题',
+        facilities: '设施',
+        activeFacilities: '已启用的设施',
+      },
+      guestView: '访客视图',
+      openMenu: '打开菜单',
+      closeMenu: '关闭菜单',
+      expandSidebar: '展开侧边栏',
+      collapseSidebar: '收起侧边栏',
+      arrivals: {
+        arrivalsToday: '今日到达数',
+        checkedIn: '已入住',
+        unpaid: '未付款',
+        guest: '访客',
+        plate: '车牌',
+        site: '营位',
+        checkIn: '入住',
+        payment: '付款',
+        checkedInBadge: '已入住',
+        notYetBadge: '未到',
+        paidBadge: '已付款',
+        unpaidBadge: '未付款',
+      },
+      questions: {
+        chats: '聊天',
+        backToChats: '返回聊天列表',
+        online: '在线',
+        aiGuide: 'AI向导',
+        you: '你',
+        typeMessage: '输入消息',
+        send: '发送',
+        selectConversation: '选择一个对话以查看消息。',
+      },
+      activeFacilities: {
+        statLabel: '已启用的设施',
+        empty: '暂无设施，请在"设施"标签页中创建。',
+        facility: '设施',
+        fee: '费用',
+        sites: '营位数',
+        rulesDoc: '规则文档',
+        status: '状态',
+        guestLink: '访客链接',
+        live: '已上线',
+        openGuestView: '打开访客视图',
+      },
+      facilities: {
+        addTitle: '添加设施',
+        addHint: '名称和规则文档即可，新营地只需要这些。',
+        loadSample: '加载示例营地',
+        facilityName: '设施名称',
+        fee: '费用（¥）',
+        numberOfSites: '营位数量',
+        rulesDocument: '规则文档（.txt / .md）',
+        pasteRulesText: '…或粘贴规则文本',
+        plainTextHint: '仅支持纯文本。PDF文本提取功能将在试点版本中支持。',
+        createFacility: '创建设施',
+        liveIn: (seconds) => `${seconds}秒后上线`,
+        sectionsIndexed: (sections, sites) => `已索引${sections}个章节 · ${sites}个营位`,
+        openGuestView: '打开访客视图',
+      },
+    },
   },
   ko: {
     common: {
       selfCheckIn: '24시간 셀프 체크인',
       goBack: '뒤로',
       changeLanguage: '언어 변경',
+      adminPanel: '관리자 패널',
     },
     welcome: {
       greet: '환영합니다',
@@ -425,6 +692,71 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
             text: '늦은 체크아웃은 1시간당 ¥500 — AI 가이드에 문의하세요.',
           },
         ],
+      },
+    },
+    admin: {
+      title: '관리자 패널',
+      tabs: {
+        arrivals: '오늘 도착',
+        questions: '게스트 질문',
+        facilities: '시설',
+        activeFacilities: '운영 중인 시설',
+      },
+      guestView: '게스트 화면',
+      openMenu: '메뉴 열기',
+      closeMenu: '메뉴 닫기',
+      expandSidebar: '사이드바 펼치기',
+      collapseSidebar: '사이드바 접기',
+      arrivals: {
+        arrivalsToday: '오늘 도착 수',
+        checkedIn: '체크인 완료',
+        unpaid: '미결제',
+        guest: '게스트',
+        plate: '번호판',
+        site: '사이트',
+        checkIn: '체크인',
+        payment: '결제',
+        checkedInBadge: '체크인 완료',
+        notYetBadge: '아직',
+        paidBadge: '결제 완료',
+        unpaidBadge: '미결제',
+      },
+      questions: {
+        chats: '채팅',
+        backToChats: '채팅 목록으로',
+        online: '온라인',
+        aiGuide: 'AI 가이드',
+        you: '나',
+        typeMessage: '메시지 입력',
+        send: '보내기',
+        selectConversation: '대화를 선택하면 메시지가 표시됩니다.',
+      },
+      activeFacilities: {
+        statLabel: '운영 중인 시설',
+        empty: "아직 시설이 없습니다. '시설' 탭에서 생성하세요.",
+        facility: '시설',
+        fee: '요금',
+        sites: '사이트 수',
+        rulesDoc: '규칙 문서',
+        status: '상태',
+        guestLink: '게스트 링크',
+        live: '운영 중',
+        openGuestView: '게스트 화면 열기',
+      },
+      facilities: {
+        addTitle: '시설 추가',
+        addHint: '이름과 규칙 문서만 있으면 새 캠핑장을 만들 수 있어요.',
+        loadSample: '샘플 불러오기',
+        facilityName: '시설 이름',
+        fee: '요금（¥）',
+        numberOfSites: '사이트 수',
+        rulesDocument: '규칙 문서 (.txt / .md)',
+        pasteRulesText: '…또는 규칙 텍스트 붙여넣기',
+        plainTextHint: '일반 텍스트만 지원합니다. PDF 텍스트 추출은 파일럿 버전에서 지원 예정입니다.',
+        createFacility: '시설 생성',
+        liveIn: (seconds) => `${seconds}초 후 운영 시작`,
+        sectionsIndexed: (sections, sites) => `${sections}개 섹션 색인됨 · ${sites}개 사이트`,
+        openGuestView: '게스트 화면 열기',
       },
     },
   },

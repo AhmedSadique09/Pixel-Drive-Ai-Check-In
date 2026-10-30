@@ -16,7 +16,7 @@ export default function CheckoutReminder() {
   return (
     <CheckoutShell
       variant="brand"
-      step={1}
+      step={0}
       bar={
         <>
           <button type="button" className="co-btn co-btn--primary" onClick={() => navigate('/check-out/checklist')}>
