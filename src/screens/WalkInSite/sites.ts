@@ -1,3 +1,5 @@
+import { MIN_STAY_DATE, isSiteTakenOn } from '../WalkInDetails/availability'
+
 export type SiteKind = 'powered' | 'standard'
 
 export interface Site {
@@ -49,6 +51,15 @@ export const AREAS: readonly SiteArea[] = [
     ],
   },
 ]
+
+/** Today keeps the seeded demo layout above; any other date gets a stable per-date demo occupancy. */
+export function getAreasForDate(dateValue: string): readonly SiteArea[] {
+  if (dateValue === MIN_STAY_DATE) return AREAS
+  return AREAS.map((area) => ({
+    ...area,
+    sites: area.sites.map((entry) => ({ ...entry, isTaken: isSiteTakenOn(dateValue, entry.id) })),
+  }))
+}
 
 const PRICE_BY_KIND: Record<SiteKind, number> = { powered: 3000, standard: 2000 }
 

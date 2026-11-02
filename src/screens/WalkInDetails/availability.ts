@@ -33,6 +33,11 @@ export function getAvailability(dateValue: string): SiteSlot[] {
   }))
 }
 
+/** Demo occupancy of one named site on a date: stable per (date, site) pair, roughly a third of sites taken. */
+export function isSiteTakenOn(dateValue: string, siteId: string): boolean {
+  return hashDate(`${dateValue}:${siteId}`) % 3 === 0
+}
+
 export function hasAvailability(dateValue: string): boolean {
   return getAvailability(dateValue).some((slot) => !slot.isOccupied)
 }

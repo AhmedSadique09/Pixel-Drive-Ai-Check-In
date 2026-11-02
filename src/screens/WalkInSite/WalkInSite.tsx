@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import iconArrowRight from '../../assets/walkinsite/icon-arrow-right.svg'
+import iconCalendar from '../../assets/checkoutreminder/icon-calendar.svg'
 import iconArrowRightMuted from '../../assets/walkinsite/icon-arrow-right-muted.svg'
 import iconDroplet from '../../assets/walkinsite/icon-droplet.svg'
 import iconMapPin from '../../assets/walkinsite/icon-map-pin.svg'
@@ -8,14 +9,16 @@ import iconTent from '../../assets/walkinsite/icon-tent.svg'
 import iconTentChip from '../../assets/walkinsite/icon-tent-chip.svg'
 import iconZap from '../../assets/walkinsite/icon-zap.svg'
 import iconZapChip from '../../assets/walkinsite/icon-zap-chip.svg'
+import { MAX_STAY_DATE, MIN_STAY_DATE } from '../WalkInDetails/availability'
 import WalkInShell from '../WalkInDetails/WalkInShell'
 import SiteTile from './SiteTile'
-import { AREAS, countFree, getSiteDetails, type SiteKind } from './sites'
+import { AREAS, countFree, getAreasForDate, getSiteDetails, type SiteKind } from './sites'
+import '../WalkInDetails/walkin-details.css'
 import './walkin-site.css'
 
 type Filter = 'all' | SiteKind
 
-const ALL_SITES = AREAS.flatMap((area) => area.sites)
+const BASE_SITES = AREAS.flatMap((area) => area.sites)
 const DEFAULT_SELECTED = 'B-07'
 
 const FILTERS: { id: Filter; label: string; icon?: string }[] = [
@@ -36,15 +39,22 @@ export default function WalkInSite() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<Filter>('all')
   const [selectedId, setSelectedId] = useState<string>(DEFAULT_SELECTED)
+  const [stayDate, setStayDate] = useState(MIN_STAY_DATE)
 
-  if (countFree(ALL_SITES) === 0) return <Navigate to="/walk-in/full" replace />
+  if (countFree(BASE_SITES) === 0) return <Navigate to="/walk-in/full" replace />
 
-  const selected = ALL_SITES.find((entry) => entry.id === selectedId && !entry.isTaken)
+  const areas = getAreasForDate(stayDate)
+  const allSites = areas.flatMap((area) => area.sites)
+  const selected = allSites.find((entry) => entry.id === selectedId && !entry.isTaken)
   const details = selected ? getSiteDetails(selected) : null
-  const visibleAreas = AREAS.filter((area) => filter === 'all' || area.kind === filter)
+  const visibleAreas = areas.filter((area) => filter === 'all' || area.kind === filter)
 
   const countFor = (id: Filter) =>
-    countFree(ALL_SITES.filter((entry) => id === 'all' || entry.kind === id))
+    countFree(allSites.filter((entry) => id === 'all' || entry.kind === id))
+
+  const handleStayDateChange = (value: string) => {
+    if (value) setStayDate(value)
+  }
 
   return (
     <WalkInShell
@@ -82,7 +92,25 @@ export default function WalkInSite() {
       <div className="wk-sites">
         <div className="walkin__heading walkin__heading--tight">
           <h1 className="walkin__h1">Choose your site</h1>
-          <p className="walkin__lead walkin__lead--sm">Tap any free site to select it.</p>
+          <p className="walkin__lead walkin__lead--sm">Pick your stay date, then tap any free site to select it.</p>
+        </div>
+
+        <div className="wk-field">
+          <label className="wk-field__label" htmlFor="walkin-site-date">
+            Stay date
+          </label>
+          <div className="wk-field__control">
+            <img src={iconCalendar} alt="" width={16} height={16} />
+            <input
+              id="walkin-site-date"
+              type="date"
+              className="wk-field__input"
+              value={stayDate}
+              min={MIN_STAY_DATE}
+              max={MAX_STAY_DATE}
+              onChange={(event) => handleStayDateChange(event.target.value)}
+            />
+          </div>
         </div>
 
         <div className="wk-chips" role="group" aria-label="Filter sites">

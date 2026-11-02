@@ -103,7 +103,7 @@ function paginate(lines: PdfLine[]): string[] {
 }
 
 /** Builds a minimal text-only PDF (Helvetica, A4) and returns its raw bytes. */
-function buildPdf(facility: FacilityRow): Uint8Array {
+function buildPdf(facility: FacilityRow): Uint8Array<ArrayBuffer> {
   const pageStreams = paginate(buildLines(facility))
   const pageObjectIds = pageStreams.map((_, index) => 5 + index * 2)
 
@@ -134,7 +134,9 @@ function buildPdf(facility: FacilityRow): Uint8Array {
   pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`
 
   // Every character is Latin-1, so one char is one byte and the xref offsets above stay valid.
-  return Uint8Array.from(pdf, (char) => char.charCodeAt(0))
+  const bytes = new Uint8Array(pdf.length)
+  for (let index = 0; index < pdf.length; index += 1) bytes[index] = pdf.charCodeAt(index)
+  return bytes
 }
 
 /** Opens a generated facility information PDF in a new tab. Call from a click handler so the popup is allowed. */
