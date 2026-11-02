@@ -29,6 +29,9 @@ Quiet hours start at 21:30 and end at 7:00. No open fires.
 # Check-out
 Check-out is by 10:30.`
 
+export const guestLink = (id: string): string =>
+  `${typeof window === 'undefined' ? '' : window.location.origin}/?facility=${id}`
+
 /** Returns `baseId`, or `baseId-2`, `baseId-3`… when that id is already taken, so every facility keeps a unique id. */
 export function uniqueFacilityId(baseId: string, facilities: FacilityRow[]): string {
   const takenIds = new Set(facilities.map((facility) => facility.id))

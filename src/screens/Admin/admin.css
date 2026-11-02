@@ -565,11 +565,13 @@
   gap: 16px;
   width: 100%;
   max-width: 440px;
+  max-height: 90vh;
   padding: 24px;
   border-radius: 16px;
   background: var(--bg-surface);
   color: var(--ink-primary);
   box-shadow: var(--shadow-raised);
+  overflow-y: auto;
 }
 
 .facility-dialog__title {
@@ -1061,6 +1063,11 @@
   opacity: 0.5;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+.facilities-panel__toolbar {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .facilities-panel__grid {

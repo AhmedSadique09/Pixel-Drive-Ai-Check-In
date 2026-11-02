@@ -21,7 +21,7 @@ export default function CheckoutReminder() {
         <>
           <button type="button" className="co-btn co-btn--primary" onClick={() => navigate('/check-out/checklist')}>
             <img src={iconLogOut} alt="" width={18} height={18} />
-            Start check-out
+            Check-out
           </button>
           <button type="button" className="co-btn co-btn--secondary" onClick={() => navigate('/check-out/extend')}>
             <img src={iconClockBtn} alt="" width={18} height={18} />

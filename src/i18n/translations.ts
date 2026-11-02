@@ -85,7 +85,6 @@ export interface AdminCopy {
     arrivals: string
     questions: string
     facilities: string
-    activeFacilities: string
   }
   guestView: string
   openMenu: string
@@ -137,6 +136,7 @@ export interface AdminCopy {
     deleteMessage: (name: string) => string
   }
   facilities: {
+    addFacility: string
     addTitle: string
     addHint: string
     loadSample: string
@@ -150,6 +150,7 @@ export interface AdminCopy {
     liveIn: (seconds: number) => string
     sectionsIndexed: (sections: number, sites: number) => string
     openGuestView: string
+    done: string
   }
 }
 
@@ -264,7 +265,6 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         arrivals: "Today's arrivals",
         questions: 'Guest questions',
         facilities: 'Facilities',
-        activeFacilities: 'Active facilities',
       },
       guestView: 'Guest view',
       openMenu: 'Open menu',
@@ -297,7 +297,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
       },
       activeFacilities: {
         statLabel: 'Active facilities',
-        empty: 'No facilities yet. Create one from the Facilities tab.',
+        empty: 'No facilities yet. Add one to get started.',
         facility: 'Facility',
         fee: 'Fee',
         sites: 'Sites',
@@ -316,6 +316,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         deleteMessage: (name) => `"${name}" will be removed from the active facilities list.`,
       },
       facilities: {
+        addFacility: 'Add new facility',
         addTitle: 'Add a facility',
         addHint: "Name + rules document. That's all a new park needs.",
         loadSample: 'Load sample park',
@@ -329,6 +330,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         liveIn: (seconds) => `Live in ${seconds}s`,
         sectionsIndexed: (sections, sites) => `${sections} section(s) indexed · ${sites} sites`,
         openGuestView: 'Open guest view',
+        done: 'Done',
       },
     },
   },
@@ -421,7 +423,6 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         arrivals: '本日の到着',
         questions: 'ゲストの質問',
         facilities: '施設',
-        activeFacilities: '稼働中の施設',
       },
       guestView: 'ゲスト画面',
       openMenu: 'メニューを開く',
@@ -454,7 +455,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
       },
       activeFacilities: {
         statLabel: '稼働中の施設',
-        empty: 'まだ施設がありません。「施設」タブから作成してください。',
+        empty: 'まだ施設がありません。下のボタンから追加してください。',
         facility: '施設',
         fee: '料金',
         sites: 'サイト数',
@@ -473,6 +474,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         deleteMessage: (name) => `「${name}」を公開中の施設一覧から削除します。`,
       },
       facilities: {
+        addFacility: '施設を新規追加',
         addTitle: '施設を追加',
         addHint: '名前とルール文書だけで新しい施設を作成できます。',
         loadSample: 'サンプルを読み込む',
@@ -486,6 +488,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         liveIn: (seconds) => `${seconds}秒で公開`,
         sectionsIndexed: (sections, sites) => `${sections}セクションをインデックス済み・${sites}サイト`,
         openGuestView: 'ゲスト画面を開く',
+        done: '完了',
       },
     },
   },
@@ -575,7 +578,6 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         arrivals: '今日到达',
         questions: '访客问题',
         facilities: '设施',
-        activeFacilities: '已启用的设施',
       },
       guestView: '访客视图',
       openMenu: '打开菜单',
@@ -608,7 +610,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
       },
       activeFacilities: {
         statLabel: '已启用的设施',
-        empty: '暂无设施，请在"设施"标签页中创建。',
+        empty: '暂无设施，请点击下方按钮添加。',
         facility: '设施',
         fee: '费用',
         sites: '营位数',
@@ -627,6 +629,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         deleteMessage: (name) => `“${name}”将从已上线设施列表中移除。`,
       },
       facilities: {
+        addFacility: '添加新设施',
         addTitle: '添加设施',
         addHint: '名称和规则文档即可，新营地只需要这些。',
         loadSample: '加载示例营地',
@@ -640,6 +643,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         liveIn: (seconds) => `${seconds}秒后上线`,
         sectionsIndexed: (sections, sites) => `已索引${sections}个章节 · ${sites}个营位`,
         openGuestView: '打开访客视图',
+        done: '完成',
       },
     },
   },
@@ -732,7 +736,6 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         arrivals: '오늘 도착',
         questions: '게스트 질문',
         facilities: '시설',
-        activeFacilities: '운영 중인 시설',
       },
       guestView: '게스트 화면',
       openMenu: '메뉴 열기',
@@ -765,7 +768,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
       },
       activeFacilities: {
         statLabel: '운영 중인 시설',
-        empty: "아직 시설이 없습니다. '시설' 탭에서 생성하세요.",
+        empty: '아직 시설이 없습니다. 아래 버튼으로 추가하세요.',
         facility: '시설',
         fee: '요금',
         sites: '사이트 수',
@@ -784,6 +787,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         deleteMessage: (name) => `"${name}" 시설이 운영 중 목록에서 삭제됩니다.`,
       },
       facilities: {
+        addFacility: '새 시설 추가',
         addTitle: '시설 추가',
         addHint: '이름과 규칙 문서만 있으면 새 캠핑장을 만들 수 있어요.',
         loadSample: '샘플 불러오기',
@@ -797,6 +801,7 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         liveIn: (seconds) => `${seconds}초 후 운영 시작`,
         sectionsIndexed: (sections, sites) => `${sections}개 섹션 색인됨 · ${sites}개 사이트`,
         openGuestView: '게스트 화면 열기',
+        done: '완료',
       },
     },
   },

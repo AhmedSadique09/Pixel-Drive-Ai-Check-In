@@ -1,15 +1,15 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AdminPanelIcon } from '../../components/AdminPanelIcon'
 import LanguageMenu from '../../components/language-menu/LanguageMenu'
 import { useLanguage } from '../../i18n/LanguageContext'
 import iconGlobe from '../../assets/checkoutshared/icon-globe.svg'
-import { SAMPLE_RULES_TEXT, SEED_FACILITIES, uniqueFacilityId, type FacilityRow } from './facility-data'
-import { DeleteFacilityDialog, EditFacilityDialog, FacilityActionsMenu } from './FacilityActions'
+import { SEED_FACILITIES, uniqueFacilityId, type FacilityRow } from './facility-data'
+import { AddFacilityDialog, DeleteFacilityDialog, EditFacilityDialog, FacilityActionsMenu } from './FacilityActions'
 import { openFacilityPdf } from './facility-pdf'
 import './admin.css'
 
-type Tab = 'arrivals' | 'questions' | 'facilities' | 'activeFacilities'
+type Tab = 'arrivals' | 'questions' | 'facilities'
 
 function HamburgerIcon() {
   return (
@@ -61,15 +61,6 @@ function FacilitiesIcon() {
   )
 }
 
-function ActiveFacilitiesIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 5.5h12M4 10h12M4 14.5h7" />
-      <circle cx="16" cy="14.5" r="1.4" />
-    </svg>
-  )
-}
-
 interface ArrivalRow {
   guest: string
   plate: string
@@ -91,10 +82,6 @@ interface GuestThread {
   lang: string
   messages: ChatMessage[]
 }
-
-const DEFAULT_FEE = 3000
-const DEFAULT_SITES = 10
-const MS_PER_SECOND = 1000
 
 /** Static demo data matching the single seeded booking used across the guest flow (no backend yet). */
 const ARRIVALS: ArrivalRow[] = [{ guest: '山田 太郎', plate: '品川 300 あ 12-34', site: 'B-07', checkedIn: true, paid: true }]
@@ -149,10 +136,7 @@ const TABS: { id: Tab; Icon: typeof ArrivalsIcon }[] = [
   { id: 'arrivals', Icon: ArrivalsIcon },
   { id: 'questions', Icon: QuestionsIcon },
   { id: 'facilities', Icon: FacilitiesIcon },
-  { id: 'activeFacilities', Icon: ActiveFacilitiesIcon },
 ]
-
-const guestLink = (id: string) => `${typeof window === 'undefined' ? '' : window.location.origin}/?facility=${id}`
 
 function ArrivalsPanel() {
   const copy = useLanguage().t.admin.arrivals
@@ -346,66 +330,66 @@ function QuestionsPanel() {
   )
 }
 
-interface ActiveFacilitiesPanelProps {
+interface FacilitiesPanelProps {
   facilities: FacilityRow[]
+  onCreate: (facility: FacilityRow) => FacilityRow
   onUpdate: (facility: FacilityRow) => void
   onDelete: (id: string) => void
 }
 
-function ActiveFacilitiesPanel({ facilities, onUpdate, onDelete }: ActiveFacilitiesPanelProps) {
-  const copy = useLanguage().t.admin.activeFacilities
+function FacilitiesPanel({ facilities, onCreate, onUpdate, onDelete }: FacilitiesPanelProps) {
+  const { facilities: copy, activeFacilities: activeCopy } = useLanguage().t.admin
+  const [isAdding, setIsAdding] = useState(false)
   const [editing, setEditing] = useState<FacilityRow | null>(null)
   const [deleting, setDeleting] = useState<FacilityRow | null>(null)
   const activeFacilities = facilities.filter((facility) => facility.status === 'live')
 
-  if (activeFacilities.length === 0) {
-    return (
-      <div className="admin__panel">
-        <p className="admin__hint">{copy.empty}</p>
-      </div>
-    )
-  }
-
   return (
-    <div className="admin__panel">
-      <div className="admin__stats">
-        <div className="admin__stat">
-          <p className="admin__stat-value">{activeFacilities.length}</p>
-          <p className="admin__stat-label">{copy.statLabel}</p>
-        </div>
+    <div className="admin__panel facilities-panel">
+      <div className="facilities-panel__toolbar">
+        <button type="button" onClick={() => setIsAdding(true)} className="btn btn--primary">
+          {copy.addFacility}
+        </button>
       </div>
-      <table className="admin__table">
-        <thead>
-          <tr>
-            <th>{copy.facility}</th>
-            <th>{copy.fee}</th>
-            <th>{copy.sites}</th>
-            <th>{copy.status}</th>
-            <th>{copy.guestLink}</th>
-            <th className="admin__table-actions">{copy.actions}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {activeFacilities.map((facility) => (
-            <tr key={facility.id}>
-              <td>{facility.name}</td>
-              <td>¥{facility.fee}</td>
-              <td>{facility.siteCount}</td>
-              <td>
-                <span className="admin__badge admin__badge--ok">{copy.live}</span>
-              </td>
-              <td>
-                <button type="button" className="admin__table-link" onClick={() => openFacilityPdf(facility)}>
-                  {copy.openGuestView}
-                </button>
-              </td>
-              <td className="admin__table-actions">
-                <FacilityActionsMenu facility={facility} onEdit={setEditing} onDelete={setDeleting} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      {activeFacilities.length === 0 ? (
+        <p className="admin__hint">{activeCopy.empty}</p>
+      ) : (
+        <table className="admin__table">
+            <thead>
+              <tr>
+                <th>{activeCopy.facility}</th>
+                <th>{activeCopy.fee}</th>
+                <th>{activeCopy.sites}</th>
+                <th>{activeCopy.status}</th>
+                <th>{activeCopy.guestLink}</th>
+                <th className="admin__table-actions">{activeCopy.actions}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activeFacilities.map((facility) => (
+                <tr key={facility.id}>
+                  <td>{facility.name}</td>
+                  <td>¥{facility.fee}</td>
+                  <td>{facility.siteCount}</td>
+                  <td>
+                    <span className="admin__badge admin__badge--ok">{activeCopy.live}</span>
+                  </td>
+                  <td>
+                    <button type="button" className="admin__table-link" onClick={() => openFacilityPdf(facility)}>
+                      {activeCopy.openGuestView}
+                    </button>
+                  </td>
+                  <td className="admin__table-actions">
+                    <FacilityActionsMenu facility={facility} onEdit={setEditing} onDelete={setDeleting} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+        </table>
+      )}
+
+      {isAdding && <AddFacilityDialog onCreate={onCreate} onClose={() => setIsAdding(false)} />}
       {editing && (
         <EditFacilityDialog
           facility={editing}
@@ -426,113 +410,6 @@ function ActiveFacilitiesPanel({ facilities, onUpdate, onDelete }: ActiveFacilit
           onClose={() => setDeleting(null)}
         />
       )}
-    </div>
-  )
-}
-
-function FacilitiesPanel({ onCreate }: { onCreate: (facility: FacilityRow) => FacilityRow }) {
-  const copy = useLanguage().t.admin.facilities
-  const [openedAt] = useState(() => Date.now())
-  const [name, setName] = useState('')
-  const [fee, setFee] = useState(DEFAULT_FEE)
-  const [siteCount, setSiteCount] = useState(DEFAULT_SITES)
-  const [docName, setDocName] = useState('rules.txt')
-  const [text, setText] = useState('')
-  const [created, setCreated] = useState<{ facility: FacilityRow; seconds: number } | null>(null)
-
-  const handleFile = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    setDocName(file.name)
-    setText(await file.text())
-  }
-
-  const loadSample = () => {
-    setName('Yamabiko Forest RV Park')
-    setDocName('Yamabiko Rules.pdf')
-    setText(SAMPLE_RULES_TEXT)
-  }
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-    const facility: FacilityRow = {
-      id: name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      name: name.trim(),
-      fee,
-      siteCount,
-      docName,
-      status: 'live',
-      rulesText: text,
-    }
-    const storedFacility = onCreate(facility)
-    setCreated({ facility: storedFacility, seconds: Math.max(1, Math.round((Date.now() - openedAt) / MS_PER_SECOND)) })
-    setName('')
-    setText('')
-  }
-
-  const sectionCount = text.split(/\n#{1,3}\s/).filter((s) => s.trim()).length
-  const canCreate = name.trim().length >= 2 && text.trim().length >= 20
-
-  return (
-    <div className="admin__panel facilities-panel">
-      <div className="facilities-panel__grid">
-        <form onSubmit={handleSubmit} className="facility-form">
-          <div className="facility-form__head">
-            <div>
-              <h2 className="facility-form__title">{copy.addTitle}</h2>
-              <p className="admin__hint">{copy.addHint}</p>
-            </div>
-            <button type="button" onClick={loadSample} className="facility-form__sample">
-              {copy.loadSample}
-            </button>
-          </div>
-
-          <label className="facility-form__field">
-            {copy.facilityName}
-            <input value={name} onChange={(e) => setName(e.target.value)} />
-          </label>
-
-          <div className="facility-form__row">
-            <label className="facility-form__field">
-              {copy.fee}
-              <input type="number" min={0} value={fee} onChange={(e) => setFee(Number(e.target.value))} />
-            </label>
-            <label className="facility-form__field">
-              {copy.numberOfSites}
-              <input type="number" min={1} max={60} value={siteCount} onChange={(e) => setSiteCount(Number(e.target.value))} />
-            </label>
-          </div>
-
-          <label className="facility-form__field">
-            {copy.rulesDocument}
-            <input type="file" accept=".txt,.md,text/plain" onChange={handleFile} />
-          </label>
-
-          <label className="facility-form__field">
-            {copy.pasteRulesText}
-            <textarea value={text} onChange={(e) => setText(e.target.value)} rows={7} className="facility-form__textarea" />
-          </label>
-
-          <p className="admin__hint">{copy.plainTextHint}</p>
-
-          <button type="submit" disabled={!canCreate} className="btn btn--primary">
-            {copy.createFacility}
-          </button>
-        </form>
-
-        {created && (
-          <div className="facilities-panel__side">
-            <div className="facility-created">
-              <p className="facility-created__eyebrow">{copy.liveIn(created.seconds)}</p>
-              <h3 className="facility-created__name">{created.facility.name}</h3>
-              <p className="facility-created__meta">{copy.sectionsIndexed(sectionCount, created.facility.siteCount)}</p>
-              <a href={guestLink(created.facility.id)} target="_blank" rel="noopener noreferrer" className="facility-created__link">
-                {copy.openGuestView}
-              </a>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   )
 }
@@ -631,15 +508,21 @@ export default function Admin() {
       </nav>
 
       <div className="admin__content">
-        {tab !== 'questions' && (
+        {tab !== 'questions' && tab !== 'facilities' && (
           <div className="admin__content-lang">
             <LanguageMenu icon={iconGlobe} triggerClassName="admin__lang-content" />
           </div>
         )}
         {tab === 'arrivals' && <ArrivalsPanel />}
         {tab === 'questions' && <QuestionsPanel />}
-        {tab === 'facilities' && <FacilitiesPanel onCreate={handleCreateFacility} />}
-        {tab === 'activeFacilities' && <ActiveFacilitiesPanel facilities={facilities} onUpdate={handleUpdateFacility} onDelete={handleDeleteFacility} />}
+        {tab === 'facilities' && (
+          <FacilitiesPanel
+            facilities={facilities}
+            onCreate={handleCreateFacility}
+            onUpdate={handleUpdateFacility}
+            onDelete={handleDeleteFacility}
+          />
+        )}
       </div>
     </main>
   )

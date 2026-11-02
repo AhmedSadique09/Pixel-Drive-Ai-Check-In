@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
-import type { FacilityRow } from './facility-data'
+import { SAMPLE_RULES_TEXT, guestLink, type FacilityRow } from './facility-data'
 
 const MENU_WIDTH = 160
 const MENU_HEIGHT = 100
@@ -9,6 +9,9 @@ const MENU_GAP = 6
 const VIEWPORT_PADDING = 8
 const MIN_NAME_LENGTH = 2
 const MAX_SITES = 60
+const DEFAULT_FEE = 3000
+const DEFAULT_SITES = 10
+const MS_PER_SECOND = 1000
 
 interface IconProps {
   children: ReactNode
@@ -143,7 +146,7 @@ interface DialogShellProps {
   children: ReactNode
 }
 
-function DialogShell({ title, role, onClose, children }: DialogShellProps) {
+export function DialogShell({ title, role, onClose, children }: DialogShellProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
@@ -233,6 +236,124 @@ export function DeleteFacilityDialog({ facility, onConfirm, onClose }: DeleteFac
           {copy.delete}
         </button>
       </div>
+    </DialogShell>
+  )
+}
+
+interface AddFacilityDialogProps {
+  onCreate: (facility: FacilityRow) => FacilityRow
+  onClose: () => void
+}
+
+/** Popup for creating a new facility — the form that used to sit directly on the Facilities tab. */
+export function AddFacilityDialog({ onCreate, onClose }: AddFacilityDialogProps) {
+  const { facilities: copy, activeFacilities: actionsCopy } = useLanguage().t.admin
+  const [openedAt] = useState(() => Date.now())
+  const [name, setName] = useState('')
+  const [fee, setFee] = useState(DEFAULT_FEE)
+  const [siteCount, setSiteCount] = useState(DEFAULT_SITES)
+  const [docName, setDocName] = useState('rules.txt')
+  const [text, setText] = useState('')
+  const [created, setCreated] = useState<{ facility: FacilityRow; seconds: number } | null>(null)
+
+  const handleFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    setDocName(file.name)
+    setText(await file.text())
+  }
+
+  const loadSample = () => {
+    setName('Yamabiko Forest RV Park')
+    setDocName('Yamabiko Rules.pdf')
+    setText(SAMPLE_RULES_TEXT)
+  }
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    const facility: FacilityRow = {
+      id: name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name: name.trim(),
+      fee,
+      siteCount,
+      docName,
+      status: 'live',
+      rulesText: text,
+    }
+    const storedFacility = onCreate(facility)
+    setCreated({ facility: storedFacility, seconds: Math.max(1, Math.round((Date.now() - openedAt) / MS_PER_SECOND)) })
+  }
+
+  const sectionCount = text.split(/\n#{1,3}\s/).filter((s) => s.trim()).length
+  const canCreate = name.trim().length >= MIN_NAME_LENGTH && text.trim().length >= 20
+
+  if (created) {
+    return (
+      <DialogShell title={copy.liveIn(created.seconds)} role="dialog" onClose={onClose}>
+        <div className="facility-created">
+          <p className="facility-created__eyebrow">{copy.liveIn(created.seconds)}</p>
+          <h3 className="facility-created__name">{created.facility.name}</h3>
+          <p className="facility-created__meta">{copy.sectionsIndexed(sectionCount, created.facility.siteCount)}</p>
+          <a href={guestLink(created.facility.id)} target="_blank" rel="noopener noreferrer" className="facility-created__link">
+            {copy.openGuestView}
+          </a>
+        </div>
+        <div className="facility-dialog__actions">
+          <button type="button" className="facility-dialog__btn facility-dialog__btn--primary" onClick={onClose}>
+            {copy.done}
+          </button>
+        </div>
+      </DialogShell>
+    )
+  }
+
+  return (
+    <DialogShell title={copy.addTitle} role="dialog" onClose={onClose}>
+      <form onSubmit={handleSubmit} className="facility-dialog__form">
+        <div className="facility-form__head">
+          <p className="admin__hint">{copy.addHint}</p>
+          <button type="button" onClick={loadSample} className="facility-form__sample">
+            {copy.loadSample}
+          </button>
+        </div>
+
+        <label className="facility-form__field">
+          {copy.facilityName}
+          <input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+        </label>
+
+        <div className="facility-form__row">
+          <label className="facility-form__field">
+            {copy.fee}
+            <input type="number" min={0} value={fee} onChange={(e) => setFee(Number(e.target.value))} />
+          </label>
+          <label className="facility-form__field">
+            {copy.numberOfSites}
+            <input type="number" min={1} max={MAX_SITES} value={siteCount} onChange={(e) => setSiteCount(Number(e.target.value))} />
+          </label>
+        </div>
+
+        <label className="facility-form__field">
+          {copy.rulesDocument}
+          <input type="file" accept=".txt,.md,text/plain" onChange={handleFile} />
+        </label>
+
+        <label className="facility-form__field">
+          {copy.pasteRulesText}
+          <textarea value={text} onChange={(e) => setText(e.target.value)} rows={7} className="facility-form__textarea" />
+        </label>
+
+        <p className="admin__hint">{copy.plainTextHint}</p>
+
+        <div className="facility-dialog__actions">
+          <button type="button" className="facility-dialog__btn" onClick={onClose}>
+            {actionsCopy.cancel}
+          </button>
+          <button type="submit" disabled={!canCreate} className="facility-dialog__btn facility-dialog__btn--primary">
+            {copy.createFacility}
+          </button>
+        </div>
+      </form>
     </DialogShell>
   )
 }

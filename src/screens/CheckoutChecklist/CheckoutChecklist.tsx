@@ -40,6 +40,8 @@ export default function CheckoutChecklist() {
   const toggle = (id: string) =>
     setCheckedIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
 
+  const toggleAll = () => setCheckedIds(isComplete ? [] : ITEMS.map((item) => item.id))
+
   const handlePhoto = (event: ChangeEvent<HTMLInputElement>) => {
     setPhotoName(event.target.files?.[0]?.name ?? null)
   }
@@ -83,9 +85,14 @@ export default function CheckoutChecklist() {
             />
           ))}
         </div>
-        <p className="checklist__count">
-          {doneCount} of {ITEMS.length} done
-        </p>
+        <div className="checklist__meta">
+          <p className="checklist__count">
+            {doneCount} of {ITEMS.length} done
+          </p>
+          <button type="button" className="checklist__toggle-all" onClick={toggleAll}>
+            {isComplete ? 'Clear all' : 'Select all'}
+          </button>
+        </div>
       </div>
 
       <ul className="checklist__list">
