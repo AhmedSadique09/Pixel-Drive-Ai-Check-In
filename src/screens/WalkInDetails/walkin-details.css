@@ -77,6 +77,128 @@
   color: var(--status-danger);
 }
 
+/* ---------- Stay-length toggle ---------- */
+.wk-stay-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--line-default);
+  border-radius: var(--radius-pill);
+  background: var(--bg-canvas);
+  box-shadow: inset 0 1px 2px rgb(23 32 28 / 6%);
+}
+
+.wk-stay-toggle__btn {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: var(--radius-pill);
+  font: var(--text-label);
+  font-weight: 700;
+  color: var(--ink-tertiary);
+  transition: background-color 0.18s, color 0.18s, box-shadow 0.18s, transform 0.12s;
+}
+
+.wk-stay-toggle__btn:hover {
+  color: var(--ink-primary);
+}
+
+.wk-stay-toggle__btn--active {
+  background: var(--brand-primary);
+  color: var(--ink-inverse);
+  box-shadow: 0 6px 16px rgb(30 90 71 / 28%);
+}
+
+.wk-stay-toggle__btn--active:hover {
+  color: var(--ink-inverse);
+}
+
+.wk-stay-toggle__btn:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Date fields ---------- */
+.wk-field__control--date {
+  position: relative;
+  height: 58px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  box-shadow: 0 1px 2px rgb(23 32 28 / 5%);
+  cursor: pointer;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+
+.wk-field__control--date:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 6px 18px rgb(30 90 71 / 12%);
+  transform: translateY(-1px);
+}
+
+.wk-field__icon-badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  background: rgb(30 90 71 / 10%);
+  color: var(--brand-primary);
+}
+
+.wk-field__control--date input[type='date'] {
+  font: var(--text-body-medium);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wk-field__control--date input[type='date']::-webkit-calendar-picker-indicator {
+  width: 18px;
+  height: 18px;
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.wk-field__control--date input[type='date']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ---------- Date range (From / To) ---------- */
+.wk-date-range {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.wk-date-range__field {
+  flex: 1;
+  min-width: 0;
+}
+
+.wk-date-range__divider {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 13px;
+  border-radius: var(--radius-pill);
+  background: rgb(227 155 50 / 16%);
+  color: var(--brand-accent);
+  font-weight: 700;
+}
+
+.wk-date-range__nights {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgb(30 90 71 / 10%);
+  font: var(--text-caption);
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
 /* ---------- Site availability ---------- */
 .wk-availability {
   display: flex;

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { LANGUAGE_OPTIONS } from '../../i18n/translations'
-import { AdminPanelIcon } from '../../components/AdminPanelIcon'
 import iconCheck from '../../assets/welcome/icon-check.svg'
 import iconChevronRight from '../../assets/welcome/icon-chevron-right.svg'
 import iconClock from '../../assets/welcome/icon-clock.svg'
@@ -21,14 +20,6 @@ export default function Welcome() {
 
   return (
     <main className="welcome">
-      <button
-        type="button"
-        className="welcome__admin-link"
-        onClick={() => navigate('/admin')}
-      >
-        <AdminPanelIcon />
-        {t.common.adminPanel}
-      </button>
       <section className="welcome__hero">
         <div className="welcome__brand">
           <span className="welcome__logo">

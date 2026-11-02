@@ -27,11 +27,13 @@ export default function Payment() {
   const location = useLocation()
   const [method, setMethod] = useState('card')
 
-  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber
+  const incomingState = location.state as { siteNumber?: string; checkoutDate?: string } | null
+  const siteNumber = incomingState?.siteNumber
+  const checkoutDate = incomingState?.checkoutDate
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate('/stay', { state: siteNumber ? { siteNumber } : undefined })
+    navigate('/stay', { state: siteNumber || checkoutDate ? { siteNumber, checkoutDate } : undefined })
   }
 
   return (

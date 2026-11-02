@@ -347,7 +347,7 @@ function FacilitiesPanel({ facilities, onCreate, onUpdate, onDelete }: Facilitie
   return (
     <div className="admin__panel facilities-panel">
       <div className="facilities-panel__toolbar">
-        <button type="button" onClick={() => setIsAdding(true)} className="btn btn--primary">
+a ti        <button type="button" onClick={() => setIsAdding(true)} className="btn btn--primary">
           {copy.addFacility}
         </button>
       </div>

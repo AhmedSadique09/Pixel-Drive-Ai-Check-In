@@ -23,7 +23,9 @@ export default function SiteRules() {
   const copy = useLanguage().t.checkIn.siteRules
   const [hasAgreed, setHasAgreed] = useState(false)
 
-  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber ?? DEFAULT_SITE_NUMBER
+  const incomingState = location.state as { siteNumber?: string; checkoutDate?: string } | null
+  const siteNumber = incomingState?.siteNumber ?? DEFAULT_SITE_NUMBER
+  const checkoutDate = incomingState?.checkoutDate
 
   return (
     <CheckInShell
@@ -48,7 +50,7 @@ export default function SiteRules() {
             type="button"
             className="btn btn--primary"
             disabled={!hasAgreed}
-            onClick={() => navigate('/check-in/payment', { state: { siteNumber } })}
+            onClick={() => navigate('/check-in/payment', { state: { siteNumber, checkoutDate } })}
           >
             {copy.agreeCta}
           </button>

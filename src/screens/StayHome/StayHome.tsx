@@ -76,10 +76,15 @@ const SAMPLE_QA = [
   },
 ]
 
-const PASS_ROWS = [
-  { icon: iconCalendar, label: 'Check-out', value: 'Sat 31 Oct, 10:00' },
-  { icon: iconWifi, label: 'Wi-Fi', value: 'RV-Guest・camp2026' },
-]
+const DEFAULT_CHECKOUT_LABEL = 'Sat 31 Oct, 10:00'
+const CHECKOUT_TIME = '10:00'
+
+function formatCheckoutLabel(checkoutDate: string | undefined): string {
+  if (!checkoutDate) return DEFAULT_CHECKOUT_LABEL
+  const date = new Date(`${checkoutDate}T00:00:00`)
+  const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' })
+  return `${dayLabel}, ${CHECKOUT_TIME}`
+}
 
 const RULE_ICONS = [iconMoonRule, iconTrash, iconFlame, iconClock]
 
@@ -141,8 +146,17 @@ export default function StayHome() {
   const navigate = useNavigate()
   const location = useLocation()
   const copy = useLanguage().t.checkIn.siteRules
-  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber ?? DEFAULT_SITE_NUMBER
+  const incomingState = location.state as { siteNumber?: string; checkoutDate?: string } | null
+  const siteNumber = incomingState?.siteNumber ?? DEFAULT_SITE_NUMBER
+  const checkoutDate = incomingState?.checkoutDate
   const parkingSites = useMemo(() => buildParkingSites(siteNumber), [siteNumber])
+  const passRows = useMemo(
+    () => [
+      { icon: iconCalendar, label: 'Check-out', value: formatCheckoutLabel(checkoutDate) },
+      { icon: iconWifi, label: 'Wi-Fi', value: 'RV-Guest・camp2026' },
+    ],
+    [checkoutDate],
+  )
   const [showRules, setShowRules] = useState(false)
   const [showSiteMap, setShowSiteMap] = useState(false)
   const [showContactHost, setShowContactHost] = useState(false)
@@ -230,7 +244,7 @@ export default function StayHome() {
             </div>
             <hr className="stay__divider" />
             <dl className="stay__rows">
-              {PASS_ROWS.map(({ icon, label, value }) => (
+              {passRows.map(({ icon, label, value }) => (
                 <div key={label} className="stay__row">
                   <img src={icon} alt="" width={16} height={16} />
                   <dt>{label}</dt>
