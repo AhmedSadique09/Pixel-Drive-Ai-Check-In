@@ -14,12 +14,18 @@ type Errors = Partial<Record<FieldName, string>>
 
 const FORM_ID = 'walkin-details-form'
 
+/** Same demo booking plate as FindByPlate.tsx, so a matching plate here means a real booking already exists. */
+const DEMO_PLATE = { region: '品川', classNo: '300', kana: 'あ', number: '12-34' }
+
 const INITIAL_VALUES: Values = {
   name: 'Taro Yamada',
-  region: '品川',
-  classNo: '300',
-  kana: 'あ',
-  number: '12-34',
+  ...DEMO_PLATE,
+}
+
+function matchesExistingBooking(values: Values): boolean {
+  return (Object.keys(DEMO_PLATE) as (keyof typeof DEMO_PLATE)[]).every(
+    (key) => values[key].trim() === DEMO_PLATE[key],
+  )
 }
 
 function validate(values: Values): Errors {
@@ -97,7 +103,7 @@ export default function WalkInDetails() {
       setTouched({ name: true, region: true, classNo: true, kana: true, number: true })
       return
     }
-    navigate('/walk-in/site')
+    navigate(matchesExistingBooking(values) ? '/check-in/rules' : '/check-in/no-booking')
   }
 
   const plateProps = { onChange: handleChange, onBlur: handleBlur }
@@ -107,7 +113,7 @@ export default function WalkInDetails() {
       step={0}
       footer={
         <button type="submit" form={FORM_ID} className="walkin-btn walkin-btn--primary">
-          Next: choose a site
+          Next
           <img src={iconArrowRight} alt="" width={18} height={18} />
         </button>
       }
@@ -115,7 +121,7 @@ export default function WalkInDetails() {
       <form id={FORM_ID} className="wk-details" onSubmit={handleSubmit} noValidate>
         <div className="walkin__heading">
           <h1 className="walkin__h1">Your name and number plate</h1>
-          <p className="walkin__lead">We’ll use these to check you in. You’ll pick your site next.</p>
+          <p className="walkin__lead">We’ll check these against today’s bookings and take you to the next step.</p>
         </div>
 
         <div className="wk-field">

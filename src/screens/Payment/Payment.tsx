@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import iconChevronLeft from '../../assets/payment/chevron-left.svg'
 import iconGlobe from '../../assets/payment/globe.svg'
 import iconCheck from '../../assets/payment/check.svg'
@@ -24,11 +24,14 @@ const TOTAL = '¥3,000'
 
 export default function Payment() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [method, setMethod] = useState('card')
+
+  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate('/stay')
+    navigate('/stay', { state: siteNumber ? { siteNumber } : undefined })
   }
 
   return (

@@ -122,11 +122,19 @@ export interface AdminCopy {
     facility: string
     fee: string
     sites: string
-    rulesDoc: string
     status: string
     guestLink: string
     live: string
     openGuestView: string
+    actions: string
+    moreActions: (name: string) => string
+    edit: string
+    delete: string
+    editTitle: string
+    saveChanges: string
+    cancel: string
+    deleteTitle: string
+    deleteMessage: (name: string) => string
   }
   facilities: {
     addTitle: string
@@ -293,11 +301,19 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         facility: 'Facility',
         fee: 'Fee',
         sites: 'Sites',
-        rulesDoc: 'Rules doc',
         status: 'Status',
         guestLink: 'Guest link',
         live: 'Live',
         openGuestView: 'Open guest view',
+        actions: 'Actions',
+        moreActions: (name) => `More actions for ${name}`,
+        edit: 'Edit',
+        delete: 'Delete',
+        editTitle: 'Edit facility',
+        saveChanges: 'Save changes',
+        cancel: 'Cancel',
+        deleteTitle: 'Delete this facility?',
+        deleteMessage: (name) => `"${name}" will be removed from the active facilities list.`,
       },
       facilities: {
         addTitle: 'Add a facility',
@@ -442,11 +458,19 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         facility: '施設',
         fee: '料金',
         sites: 'サイト数',
-        rulesDoc: 'ルール文書',
         status: 'ステータス',
         guestLink: 'ゲスト用リンク',
         live: '公開中',
         openGuestView: 'ゲスト画面を開く',
+        actions: '操作',
+        moreActions: (name) => `${name}のその他の操作`,
+        edit: '編集',
+        delete: '削除',
+        editTitle: '施設を編集',
+        saveChanges: '変更を保存',
+        cancel: 'キャンセル',
+        deleteTitle: 'この施設を削除しますか？',
+        deleteMessage: (name) => `「${name}」を公開中の施設一覧から削除します。`,
       },
       facilities: {
         addTitle: '施設を追加',
@@ -588,11 +612,19 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         facility: '设施',
         fee: '费用',
         sites: '营位数',
-        rulesDoc: '规则文档',
         status: '状态',
         guestLink: '访客链接',
         live: '已上线',
         openGuestView: '打开访客视图',
+        actions: '操作',
+        moreActions: (name) => `${name}的更多操作`,
+        edit: '编辑',
+        delete: '删除',
+        editTitle: '编辑设施',
+        saveChanges: '保存更改',
+        cancel: '取消',
+        deleteTitle: '删除此设施？',
+        deleteMessage: (name) => `“${name}”将从已上线设施列表中移除。`,
       },
       facilities: {
         addTitle: '添加设施',
@@ -737,11 +769,19 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
         facility: '시설',
         fee: '요금',
         sites: '사이트 수',
-        rulesDoc: '규칙 문서',
         status: '상태',
         guestLink: '게스트 링크',
         live: '운영 중',
         openGuestView: '게스트 화면 열기',
+        actions: '작업',
+        moreActions: (name) => `${name} 추가 작업`,
+        edit: '수정',
+        delete: '삭제',
+        editTitle: '시설 수정',
+        saveChanges: '변경 사항 저장',
+        cancel: '취소',
+        deleteTitle: '이 시설을 삭제하시겠습니까?',
+        deleteMessage: (name) => `"${name}" 시설이 운영 중 목록에서 삭제됩니다.`,
       },
       facilities: {
         addTitle: '시설 추가',

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import CheckInShell from '../../components/checkin-flow/CheckInShell'
 import { useLanguage } from '../../i18n/LanguageContext'
 import iconCheck from '../../assets/siterules/icon-check.svg'
@@ -12,15 +12,18 @@ import iconTrash from '../../assets/siterules/icon-trash.svg'
 import siteMap from '../../assets/siterules/map.svg'
 import './siterules.css'
 
-const SITE_NUMBER = 'B-07'
+const DEFAULT_SITE_NUMBER = 'B-07'
 
 // Same order as `siteRules.rules` in the translations.
 const RULE_ICONS = [iconMoon, iconTrash, iconFlame, iconClock]
 
 export default function SiteRules() {
   const navigate = useNavigate()
+  const location = useLocation()
   const copy = useLanguage().t.checkIn.siteRules
-  const [hasAgreed, setHasAgreed] = useState(true)
+  const [hasAgreed, setHasAgreed] = useState(false)
+
+  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber ?? DEFAULT_SITE_NUMBER
 
   return (
     <CheckInShell
@@ -45,7 +48,7 @@ export default function SiteRules() {
             type="button"
             className="btn btn--primary"
             disabled={!hasAgreed}
-            onClick={() => navigate('/check-in/payment')}
+            onClick={() => navigate('/check-in/payment', { state: { siteNumber } })}
           >
             {copy.agreeCta}
           </button>
@@ -59,7 +62,7 @@ export default function SiteRules() {
               <p id="site-card-label" className="site-card__label">
                 {copy.siteLabel}
               </p>
-              <p className="site-card__number">{SITE_NUMBER}</p>
+              <p className="site-card__number">{siteNumber}</p>
             </div>
             <span className="site-card__pin">
               <img src={iconNavigation} alt="" width={20} height={20} />
@@ -69,11 +72,11 @@ export default function SiteRules() {
           <div
             className="site-map"
             role="img"
-            aria-label={copy.mapAria(SITE_NUMBER)}
+            aria-label={copy.mapAria(siteNumber)}
           >
             <div className="site-map__canvas">
               <img src={siteMap} alt="" width={322} height={112} />
-              <span className="site-map__label site-map__label--site">{SITE_NUMBER}</span>
+              <span className="site-map__label site-map__label--site">{siteNumber}</span>
               <span className="site-map__label site-map__label--restroom">{copy.restrooms}</span>
               <span className="site-map__label site-map__label--kitchen">{copy.kitchen}</span>
               <span className="site-map__label site-map__label--entrance">{copy.entrance}</span>

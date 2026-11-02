@@ -20,6 +20,8 @@ export const SCREEN_ROUTES: ScreenRoute[] = [
   { path: '/guide/ask-host', folder: 'GuideAskHost', figmaNodeId: '6:905' },
   { path: '/guide/host-replied', folder: 'GuideHostReplied', figmaNodeId: '6:981' },
   { path: '/walk-in', folder: 'WalkInDetails', figmaNodeId: '10:599' },
+  /** No Figma frame — split out of WalkInDetails (part 2: number plate). */
+  { path: '/walk-in/plate', folder: 'WalkInPlate' },
   { path: '/walk-in/site', folder: 'WalkInSite', figmaNodeId: '10:689' },
   { path: '/walk-in/full', folder: 'WalkInFull', figmaNodeId: '8:1120' },
   { path: '/check-out', folder: 'CheckoutReminder', figmaNodeId: '17:711' },

@@ -159,8 +159,13 @@
   color: var(--ink-inverse);
 }
 
-.walkin-btn--primary:hover {
+.walkin-btn--primary:hover:not(:disabled) {
   background: #184a3a;
+}
+
+.walkin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .walkin-btn--secondary {

@@ -77,6 +77,113 @@
   color: var(--status-danger);
 }
 
+/* ---------- Site availability ---------- */
+.wk-availability {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg-canvas);
+}
+
+.wk-availability__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wk-availability__count {
+  font: var(--text-caption);
+  color: var(--ink-secondary);
+}
+
+.wk-availability__legend {
+  display: flex;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-caption);
+  color: var(--ink-secondary);
+}
+
+.wk-availability__legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wk-availability__dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.wk-availability__dot--available {
+  background: var(--status-success, #2e7d4f);
+}
+
+.wk-availability__dot--occupied {
+  background: var(--line-strong);
+}
+
+.wk-availability__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.wk-availability__slot {
+  display: grid;
+  place-items: center;
+  padding: 10px 4px;
+  border-radius: 10px;
+  font: var(--text-label);
+  font-weight: 700;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.wk-availability__slot--available {
+  border: 1px solid var(--status-success, #2e7d4f);
+  background: var(--status-success-soft, #e1f2e7);
+  color: var(--status-success, #2e7d4f);
+  cursor: pointer;
+}
+
+.wk-availability__slot--available:hover {
+  box-shadow: 0 2px 8px rgb(46 125 79 / 20%);
+  transform: translateY(-1px);
+}
+
+.wk-availability__slot--available:active {
+  transform: scale(0.97);
+}
+
+.wk-availability__slot--selected {
+  background: var(--status-success, #2e7d4f);
+  color: #fff;
+  box-shadow: 0 2px 8px rgb(46 125 79 / 30%);
+}
+
+.wk-availability__slot--occupied {
+  border: 1px solid var(--line-strong);
+  background: var(--bg-surface);
+  color: var(--ink-tertiary);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.wk-availability__selected {
+  margin: 0;
+  font: var(--text-caption);
+  font-weight: 700;
+  color: var(--status-success, #2e7d4f);
+}
+
 /* ---------- Number plate group ---------- */
 .wk-plate-fields {
   display: flex;

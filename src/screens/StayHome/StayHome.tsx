@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import iconMoon from '../../assets/stayhome/moon.svg'
 import iconGlobe from '../../assets/stayhome/globe.svg'
@@ -90,7 +90,7 @@ const QUICK_ACTIONS = [
   { icon: iconMessageDark, label: 'Contact host', to: null, action: 'contact-host' as const },
 ]
 
-const SITE_NUMBER = 'B-07'
+const DEFAULT_SITE_NUMBER = 'B-07'
 
 function VanIcon() {
   return (
@@ -114,18 +114,25 @@ function CloseIcon() {
 
 type SpotStatus = 'you' | 'occupied' | 'empty'
 
-const PARKING_SITES: { id: string; status: SpotStatus }[] = [
-  { id: 'B-01', status: 'occupied' },
-  { id: 'B-02', status: 'empty' },
-  { id: 'B-03', status: 'occupied' },
-  { id: 'B-04', status: 'occupied' },
-  { id: 'B-05', status: 'empty' },
-  { id: 'B-06', status: 'occupied' },
-  { id: SITE_NUMBER, status: 'you' },
-  { id: 'B-08', status: 'empty' },
-  { id: 'B-09', status: 'occupied' },
-  { id: 'B-10', status: 'empty' },
-]
+const BASE_PARKING_STATUS: Record<string, SpotStatus> = {
+  'B-01': 'occupied',
+  'B-02': 'empty',
+  'B-03': 'occupied',
+  'B-04': 'occupied',
+  'B-05': 'empty',
+  'B-06': 'occupied',
+  'B-07': 'empty',
+  'B-08': 'empty',
+  'B-09': 'occupied',
+  'B-10': 'empty',
+}
+
+function buildParkingSites(siteNumber: string): { id: string; status: SpotStatus }[] {
+  return Object.keys(BASE_PARKING_STATUS).map((id) => ({
+    id,
+    status: id === siteNumber ? 'you' : BASE_PARKING_STATUS[id],
+  }))
+}
 
 function nowLabel(): string {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -133,7 +140,10 @@ function nowLabel(): string {
 
 export default function StayHome() {
   const navigate = useNavigate()
+  const location = useLocation()
   const copy = useLanguage().t.checkIn.siteRules
+  const siteNumber = (location.state as { siteNumber?: string } | null)?.siteNumber ?? DEFAULT_SITE_NUMBER
+  const parkingSites = useMemo(() => buildParkingSites(siteNumber), [siteNumber])
   const [showRules, setShowRules] = useState(false)
   const [showSiteMap, setShowSiteMap] = useState(false)
   const [showContactHost, setShowContactHost] = useState(false)
@@ -212,7 +222,7 @@ export default function StayHome() {
             <div className="stay__site">
               <div>
                 <p className="stay__site-label">Site</p>
-                <p className="stay__site-number">{SITE_NUMBER}</p>
+                <p className="stay__site-number">{siteNumber}</p>
               </div>
               <span className="stay__paid">
                 <img src={iconCheckBadge} alt="" width={12} height={12} />
@@ -330,14 +340,14 @@ export default function StayHome() {
                   <p id="stay-sitemap-number" className="site-card__label">
                     {copy.siteLabel}
                   </p>
-                  <p className="site-card__number">{SITE_NUMBER}</p>
+                  <p className="site-card__number">{siteNumber}</p>
                 </div>
                 <span className="site-card__pin">
                   <img src={iconNavigation} alt="" width={20} height={20} />
                 </span>
               </div>
 
-              <div className="parking-lot" role="img" aria-label={copy.mapAria(SITE_NUMBER)}>
+              <div className="parking-lot" role="img" aria-label={copy.mapAria(siteNumber)}>
                 <ul className="parking-lot__legend">
                   <li>
                     <span className="parking-dot parking-dot--you" /> Your site
@@ -350,7 +360,7 @@ export default function StayHome() {
                   </li>
                 </ul>
                 <div className="parking-lot__grid">
-                  {PARKING_SITES.map((site) => (
+                  {parkingSites.map((site) => (
                     <div key={site.id} className={`parking-spot parking-spot--${site.status}`}>
                       {site.status !== 'empty' && (
                         <span className="parking-spot__van">

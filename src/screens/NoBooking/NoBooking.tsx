@@ -76,7 +76,7 @@ export default function NoBooking() {
               <p className="walk-in__desc">{copy.walkInDesc}</p>
             </div>
           </div>
-          <button type="button" className="walk-in__cta" onClick={() => navigate('/walk-in')}>
+          <button type="button" className="walk-in__cta" onClick={() => navigate('/walk-in/plate')}>
             {copy.walkInCta}
             <img src={iconChevronRight} alt="" width={18} height={18} />
           </button>

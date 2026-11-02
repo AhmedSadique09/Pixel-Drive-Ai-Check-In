@@ -4,6 +4,9 @@ import { AdminPanelIcon } from '../../components/AdminPanelIcon'
 import LanguageMenu from '../../components/language-menu/LanguageMenu'
 import { useLanguage } from '../../i18n/LanguageContext'
 import iconGlobe from '../../assets/checkoutshared/icon-globe.svg'
+import { SAMPLE_RULES_TEXT, SEED_FACILITIES, uniqueFacilityId, type FacilityRow } from './facility-data'
+import { DeleteFacilityDialog, EditFacilityDialog, FacilityActionsMenu } from './FacilityActions'
+import { openFacilityPdf } from './facility-pdf'
 import './admin.css'
 
 type Tab = 'arrivals' | 'questions' | 'facilities' | 'activeFacilities'
@@ -89,36 +92,9 @@ interface GuestThread {
   messages: ChatMessage[]
 }
 
-interface FacilityRow {
-  id: string
-  name: string
-  fee: number
-  siteCount: number
-  docName: string
-  status: 'live' | 'draft'
-}
-
 const DEFAULT_FEE = 3000
 const DEFAULT_SITES = 10
 const MS_PER_SECOND = 1000
-
-const SAMPLE_RULES_TEXT = `# Arrival / Check-in
-Check-in from 14:00. Late arrivals welcome; use the QR code at the gate.
-
-# Garbage
-Garbage is take-home only; there is no garbage station on site.
-
-# Generators
-Generators may run from 9:00 to 20:00 only.
-
-# Power
-Each site has a 20A power hookup.
-
-# Quiet hours
-Quiet hours start at 21:30 and end at 7:00. No open fires.
-
-# Check-out
-Check-out is by 10:30.`
 
 /** Static demo data matching the single seeded booking used across the guest flow (no backend yet). */
 const ARRIVALS: ArrivalRow[] = [{ guest: '山田 太郎', plate: '品川 300 あ 12-34', site: 'B-07', checkedIn: true, paid: true }]
@@ -370,10 +346,19 @@ function QuestionsPanel() {
   )
 }
 
-function ActiveFacilitiesPanel({ facilities }: { facilities: FacilityRow[] }) {
-  const copy = useLanguage().t.admin.activeFacilities
+interface ActiveFacilitiesPanelProps {
+  facilities: FacilityRow[]
+  onUpdate: (facility: FacilityRow) => void
+  onDelete: (id: string) => void
+}
 
-  if (facilities.length === 0) {
+function ActiveFacilitiesPanel({ facilities, onUpdate, onDelete }: ActiveFacilitiesPanelProps) {
+  const copy = useLanguage().t.admin.activeFacilities
+  const [editing, setEditing] = useState<FacilityRow | null>(null)
+  const [deleting, setDeleting] = useState<FacilityRow | null>(null)
+  const activeFacilities = facilities.filter((facility) => facility.status === 'live')
+
+  if (activeFacilities.length === 0) {
     return (
       <div className="admin__panel">
         <p className="admin__hint">{copy.empty}</p>
@@ -385,7 +370,7 @@ function ActiveFacilitiesPanel({ facilities }: { facilities: FacilityRow[] }) {
     <div className="admin__panel">
       <div className="admin__stats">
         <div className="admin__stat">
-          <p className="admin__stat-value">{facilities.length}</p>
+          <p className="admin__stat-value">{activeFacilities.length}</p>
           <p className="admin__stat-label">{copy.statLabel}</p>
         </div>
       </div>
@@ -395,35 +380,57 @@ function ActiveFacilitiesPanel({ facilities }: { facilities: FacilityRow[] }) {
             <th>{copy.facility}</th>
             <th>{copy.fee}</th>
             <th>{copy.sites}</th>
-            <th>{copy.rulesDoc}</th>
             <th>{copy.status}</th>
             <th>{copy.guestLink}</th>
+            <th className="admin__table-actions">{copy.actions}</th>
           </tr>
         </thead>
         <tbody>
-          {facilities.map((facility) => (
+          {activeFacilities.map((facility) => (
             <tr key={facility.id}>
               <td>{facility.name}</td>
               <td>¥{facility.fee}</td>
               <td>{facility.siteCount}</td>
-              <td>{facility.docName}</td>
               <td>
                 <span className="admin__badge admin__badge--ok">{copy.live}</span>
               </td>
               <td>
-                <a href={guestLink(facility.id)} target="_blank" rel="noopener noreferrer" className="admin__table-link">
+                <button type="button" className="admin__table-link" onClick={() => openFacilityPdf(facility)}>
                   {copy.openGuestView}
-                </a>
+                </button>
+              </td>
+              <td className="admin__table-actions">
+                <FacilityActionsMenu facility={facility} onEdit={setEditing} onDelete={setDeleting} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {editing && (
+        <EditFacilityDialog
+          facility={editing}
+          onSave={(updated) => {
+            onUpdate(updated)
+            setEditing(null)
+          }}
+          onClose={() => setEditing(null)}
+        />
+      )}
+      {deleting && (
+        <DeleteFacilityDialog
+          facility={deleting}
+          onConfirm={(target) => {
+            onDelete(target.id)
+            setDeleting(null)
+          }}
+          onClose={() => setDeleting(null)}
+        />
+      )}
     </div>
   )
 }
 
-function FacilitiesPanel({ onCreate }: { onCreate: (facility: FacilityRow) => void }) {
+function FacilitiesPanel({ onCreate }: { onCreate: (facility: FacilityRow) => FacilityRow }) {
   const copy = useLanguage().t.admin.facilities
   const [openedAt] = useState(() => Date.now())
   const [name, setName] = useState('')
@@ -455,9 +462,10 @@ function FacilitiesPanel({ onCreate }: { onCreate: (facility: FacilityRow) => vo
       siteCount,
       docName,
       status: 'live',
+      rulesText: text,
     }
-    onCreate(facility)
-    setCreated({ facility, seconds: Math.max(1, Math.round((Date.now() - openedAt) / MS_PER_SECOND)) })
+    const storedFacility = onCreate(facility)
+    setCreated({ facility: storedFacility, seconds: Math.max(1, Math.round((Date.now() - openedAt) / MS_PER_SECOND)) })
     setName('')
     setText('')
   }
@@ -533,12 +541,22 @@ export default function Admin() {
   const navigate = useNavigate()
   const copy = useLanguage().t.admin
   const [tab, setTab] = useState<Tab>('arrivals')
-  const [facilities, setFacilities] = useState<FacilityRow[]>([])
+  const [facilities, setFacilities] = useState<FacilityRow[]>(SEED_FACILITIES)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
-  const handleCreateFacility = (facility: FacilityRow) => {
-    setFacilities((current) => [...current, facility])
+  const handleCreateFacility = (facility: FacilityRow): FacilityRow => {
+    const storedFacility = { ...facility, id: uniqueFacilityId(facility.id, facilities) }
+    setFacilities((current) => [...current, storedFacility])
+    return storedFacility
+  }
+
+  const handleUpdateFacility = (updated: FacilityRow) => {
+    setFacilities((current) => current.map((facility) => (facility.id === updated.id ? updated : facility)))
+  }
+
+  const handleDeleteFacility = (id: string) => {
+    setFacilities((current) => current.filter((facility) => facility.id !== id))
   }
 
   const selectTab = (id: Tab) => {
@@ -621,7 +639,7 @@ export default function Admin() {
         {tab === 'arrivals' && <ArrivalsPanel />}
         {tab === 'questions' && <QuestionsPanel />}
         {tab === 'facilities' && <FacilitiesPanel onCreate={handleCreateFacility} />}
-        {tab === 'activeFacilities' && <ActiveFacilitiesPanel facilities={facilities} />}
+        {tab === 'activeFacilities' && <ActiveFacilitiesPanel facilities={facilities} onUpdate={handleUpdateFacility} onDelete={handleDeleteFacility} />}
       </div>
     </main>
   )
