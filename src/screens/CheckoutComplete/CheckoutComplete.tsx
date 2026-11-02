@@ -23,7 +23,7 @@ const RESET_DELAY_MS = 1500
 export default function CheckoutComplete() {
   const navigate = useNavigate()
   const [rating, setRating] = useState(4)
-  const [selectedTags, setSelectedTags] = useState<readonly string[]>(['Quiet', 'Near an onsen'])
+  const [selectedTags, setSelectedTags] = useState<readonly string[]>([])
   const [isReceiptSent, setIsReceiptSent] = useState(false)
   const [isRatingSent, setIsRatingSent] = useState(false)
 
