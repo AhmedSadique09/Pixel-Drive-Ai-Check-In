@@ -256,13 +256,14 @@
   padding: 24px 20px 48px;
 }
 
-.admin__content:has(.chat) {
+.admin__content--flush {
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 0;
 }
 
-.admin__content:has(.chat) .chat {
+.admin__content--flush .chat {
   box-shadow: var(--shadow-card);
 }
 
@@ -273,6 +274,14 @@
 
   .admin__mobile-bar,
   .admin__sidebar-overlay {
+    display: none;
+  }
+
+  .admin__table-wrap {
+    display: block;
+  }
+
+  .admin__facility-cards {
     display: none;
   }
 
@@ -306,7 +315,7 @@
     padding: 32px 32px 48px;
   }
 
-  .admin__content:has(.chat) {
+  .admin__content--flush {
     padding: 0;
   }
 
@@ -338,8 +347,9 @@
   gap: 16px;
 }
 
-.admin__panel:has(.chat) {
+.admin__panel--chat {
   flex: 1;
+  width: 100%;
   min-height: 0;
   gap: 0;
 }
@@ -385,15 +395,97 @@
   color: var(--status-error);
 }
 
-.admin__table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+.admin__table-wrap {
+  display: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--line-default);
   border-radius: 14px;
-  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.admin__facility-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facility-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line-default);
+  border-radius: 14px;
   background: var(--bg-surface);
   box-shadow: var(--shadow-card);
+}
+
+.facility-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.facility-card__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.facility-card__name {
+  font: var(--text-body-medium);
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+
+.facility-card__stats {
+  display: flex;
+  gap: 20px;
+  margin: 0;
+}
+
+.facility-card__stat dt {
+  font: var(--text-label);
+  color: var(--ink-tertiary);
+}
+
+.facility-card__stat dd {
+  margin: 2px 0 0;
+  font: var(--text-body-medium);
+  font-weight: 700;
+}
+
+.facility-card__plate {
+  font: var(--text-caption);
+  color: var(--ink-tertiary);
+}
+
+.facility-card__site {
+  flex: none;
+  font: var(--text-body-medium);
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.facility-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin__table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bg-surface);
 }
 
 .admin__table th,
@@ -649,6 +741,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  width: 150%;
   min-height: 0;
   border: 0;
   overflow: hidden;
@@ -674,12 +767,13 @@
 .chat__guests {
   display: flex;
   flex: 1;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
-  overflow-x: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .chat__guests li {
@@ -719,13 +813,13 @@
 .chat__guest-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 8px;
   min-width: 0;
 }
 
 .chat__guest-name {
-  flex: 1;
+  flex: 0 1 auto;
+  max-width: 65%;
   min-width: 0;
   overflow: hidden;
   font: var(--text-body-medium);

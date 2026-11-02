@@ -158,36 +158,60 @@ function ArrivalsPanel() {
           <p className="admin__stat-label">{copy.unpaid}</p>
         </div>
       </div>
-      <table className="admin__table">
-        <thead>
-          <tr>
-            <th>{copy.guest}</th>
-            <th>{copy.plate}</th>
-            <th>{copy.site}</th>
-            <th>{copy.checkIn}</th>
-            <th>{copy.payment}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ARRIVALS.map((row) => (
-            <tr key={row.plate}>
-              <td>{row.guest}</td>
-              <td>{row.plate}</td>
-              <td>{row.site}</td>
-              <td>
-                <span className={`admin__badge ${row.checkedIn ? 'admin__badge--ok' : 'admin__badge--wait'}`}>
-                  {row.checkedIn ? copy.checkedInBadge : copy.notYetBadge}
-                </span>
-              </td>
-              <td>
-                <span className={`admin__badge ${row.paid ? 'admin__badge--ok' : 'admin__badge--bad'}`}>
-                  {row.paid ? copy.paidBadge : copy.unpaidBadge}
-                </span>
-              </td>
+      <ul className="admin__facility-cards">
+        {ARRIVALS.map((row) => (
+          <li key={row.plate} className="facility-card">
+            <div className="facility-card__head">
+              <div className="facility-card__title">
+                <p className="facility-card__name">{row.guest}</p>
+                <span className="facility-card__plate">{row.plate}</span>
+              </div>
+              <span className="facility-card__site">{row.site}</span>
+            </div>
+            <div className="facility-card__badges">
+              <span className={`admin__badge ${row.checkedIn ? 'admin__badge--ok' : 'admin__badge--wait'}`}>
+                {row.checkedIn ? copy.checkedInBadge : copy.notYetBadge}
+              </span>
+              <span className={`admin__badge ${row.paid ? 'admin__badge--ok' : 'admin__badge--bad'}`}>
+                {row.paid ? copy.paidBadge : copy.unpaidBadge}
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="admin__table-wrap">
+        <table className="admin__table">
+          <thead>
+            <tr>
+              <th>{copy.guest}</th>
+              <th>{copy.plate}</th>
+              <th>{copy.site}</th>
+              <th>{copy.checkIn}</th>
+              <th>{copy.payment}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {ARRIVALS.map((row) => (
+              <tr key={row.plate}>
+                <td>{row.guest}</td>
+                <td>{row.plate}</td>
+                <td>{row.site}</td>
+                <td>
+                  <span className={`admin__badge ${row.checkedIn ? 'admin__badge--ok' : 'admin__badge--wait'}`}>
+                    {row.checkedIn ? copy.checkedInBadge : copy.notYetBadge}
+                  </span>
+                </td>
+                <td>
+                  <span className={`admin__badge ${row.paid ? 'admin__badge--ok' : 'admin__badge--bad'}`}>
+                    {row.paid ? copy.paidBadge : copy.unpaidBadge}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -250,7 +274,7 @@ function QuestionsPanel() {
   }
 
   return (
-    <div className="admin__panel">
+    <div className="admin__panel admin__panel--chat">
       <div className={`chat ${selectedThread ? 'chat--thread-open' : ''}`}>
         <div className="chat__guests-panel">
           <div className="chat__guests-header">{copy.chats}</div>
@@ -347,7 +371,7 @@ function FacilitiesPanel({ facilities, onCreate, onUpdate, onDelete }: Facilitie
   return (
     <div className="admin__panel facilities-panel">
       <div className="facilities-panel__toolbar">
-a ti        <button type="button" onClick={() => setIsAdding(true)} className="btn btn--primary">
+        <button type="button" onClick={() => setIsAdding(true)} className="btn btn--primary">
           {copy.addFacility}
         </button>
       </div>
@@ -355,7 +379,36 @@ a ti        <button type="button" onClick={() => setIsAdding(true)} className="b
       {activeFacilities.length === 0 ? (
         <p className="admin__hint">{activeCopy.empty}</p>
       ) : (
-        <table className="admin__table">
+        <>
+          <ul className="admin__facility-cards">
+            {activeFacilities.map((facility) => (
+              <li key={facility.id} className="facility-card">
+                <div className="facility-card__head">
+                  <div className="facility-card__title">
+                    <p className="facility-card__name">{facility.name}</p>
+                    <span className="admin__badge admin__badge--ok">{activeCopy.live}</span>
+                  </div>
+                  <FacilityActionsMenu facility={facility} onEdit={setEditing} onDelete={setDeleting} />
+                </div>
+                <dl className="facility-card__stats">
+                  <div className="facility-card__stat">
+                    <dt>{activeCopy.fee}</dt>
+                    <dd>¥{facility.fee}</dd>
+                  </div>
+                  <div className="facility-card__stat">
+                    <dt>{activeCopy.sites}</dt>
+                    <dd>{facility.siteCount}</dd>
+                  </div>
+                </dl>
+                <button type="button" className="admin__table-link" onClick={() => openFacilityPdf(facility)}>
+                  {activeCopy.openGuestView}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="admin__table-wrap">
+          <table className="admin__table">
             <thead>
               <tr>
                 <th>{activeCopy.facility}</th>
@@ -386,7 +439,9 @@ a ti        <button type="button" onClick={() => setIsAdding(true)} className="b
                 </tr>
               ))}
             </tbody>
-        </table>
+          </table>
+          </div>
+        </>
       )}
 
       {isAdding && <AddFacilityDialog onCreate={onCreate} onClose={() => setIsAdding(false)} />}
@@ -507,7 +562,7 @@ export default function Admin() {
         </button>
       </nav>
 
-      <div className="admin__content">
+      <div className={`admin__content${tab === 'questions' ? ' admin__content--flush' : ''}`}>
         {tab !== 'questions' && tab !== 'facilities' && (
           <div className="admin__content-lang">
             <LanguageMenu icon={iconGlobe} triggerClassName="admin__lang-content" />
