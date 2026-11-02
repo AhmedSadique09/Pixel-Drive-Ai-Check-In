@@ -14,6 +14,10 @@ function nightsBetween(fromDate: string, toDate: string): number {
   return Math.max(1, Math.round((new Date(toDate).getTime() - new Date(fromDate).getTime()) / MS_PER_DAY))
 }
 
+function nextDay(dateValue: string): string {
+  return new Date(new Date(dateValue).getTime() + MS_PER_DAY).toISOString().slice(0, 10)
+}
+
 export default function WalkInPlate() {
   const navigate = useNavigate()
   const [stayLength, setStayLength] = useState<StayLength>('single')
@@ -53,7 +57,7 @@ export default function WalkInPlate() {
 
   const handleSubmit = () => {
     if (!canProceed) return
-    const checkoutDate = stayLength === 'single' ? stayDate : toDate
+    const checkoutDate = stayLength === 'single' ? nextDay(stayDate) : toDate
     navigate('/check-in/rules', { state: { siteNumber: selectedSiteId, checkoutDate } })
   }
 
