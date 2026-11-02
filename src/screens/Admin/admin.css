@@ -277,14 +277,6 @@
     display: none;
   }
 
-  .admin__table-wrap {
-    display: block;
-  }
-
-  .admin__facility-cards {
-    display: none;
-  }
-
   .admin__sidebar-close {
     display: none;
   }
@@ -1082,6 +1074,14 @@
 }
 
 @media (min-width: 720px) {
+  .admin__table-wrap {
+    display: block;
+  }
+
+  .admin__facility-cards {
+    display: none;
+  }
+
   .chat {
     position: relative;
     display: block;
