@@ -8,7 +8,6 @@ import iconCheckBadge from '../../assets/stayhome/check-badge.svg'
 import iconCalendar from '../../assets/stayhome/calendar.svg'
 import iconWifi from '../../assets/stayhome/wifi.svg'
 import iconSparkles from '../../assets/stayhome/sparkles.svg'
-import iconMessageWhite from '../../assets/stayhome/message-white.svg'
 import iconMap from '../../assets/stayhome/map.svg'
 import iconBook from '../../assets/stayhome/book.svg'
 import iconMessageDark from '../../assets/stayhome/message-dark.svg'
@@ -254,7 +253,7 @@ export default function StayHome() {
               </div>
             </div>
             <button type="button" className="stay__cta" onClick={() => setShowAiGuide(true)}>
-              <img src={iconMessageWhite} alt="" width={18} height={18} />
+              <img src={iconMessageDark} alt="" width={18} height={18} />
               Ask the AI guide
             </button>
           </section>
